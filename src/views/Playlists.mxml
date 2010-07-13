@@ -181,7 +181,7 @@
     
 	<mx:List id="listas" dataProvider="{lists}" labelField="name" left="10" top="27" width="230" bottom="40"
 		click="listas.editable=(listas.selectedIndex!=0)" change="listas.editable=false" itemClick="onItemClick(event)" 
-		backgroundAlpha="1" borderThickness="0" creationComplete="listas.selectedIndex=0" /> <!--DRAG DROP SOLO CON DRAGMANAGER POR CODIGO.QUIZA EN RELEASE BUILD NO OCURRA-->
+		creationComplete="listas.selectedIndex=0" /> <!--DRAG DROP SOLO CON DRAGMANAGER POR CODIGO.QUIZA EN RELEASE BUILD NO OCURRA-->
 	<mx:Button label="+" width="32.95" left="10" bottom="10" click="addList()"/>
 	<mx:Button label="-" enabled="{!(listas.selectedIndex==0 || listas.selectedItem==null)}" width="32.95" left="50.95" bottom="10" click="removeList()"/>
 	<mx:ComboBox id="comboLists" dataProvider="{lists}" creationComplete="selectFirst(event)" labelField="name" top="1" left="384"/>
