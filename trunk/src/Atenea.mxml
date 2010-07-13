@@ -17,6 +17,7 @@
 	  	
 		<mx:ApplicationControlBar dock="true" height="55.3" left="0" right="0" top="0" mouseDown="nativeWindow.startMove()">
 		     <mx:Spacer width="100%"/>
+		     <mx:ComboBox id="fondoCB" dataProvider="{fondosAC}" labelField="label"/>
 		     <mx:VBox height="100%" >
 		     	<chrome:buscar id="address" bottom="0" width="215" height="22" mouseDown="mouseD(event)" color="#000000"/>
 		     	<mx:ProgressBar id="loading" top="0" width="{address.width}" indeterminate="true" visible="false" 
@@ -83,7 +84,5 @@
 		     
 		</chrome:chrome>
 	  <mx:Image source="assets/title.png" x="8" y="-4" mouseDown="nativeWindow.startMove()" toolTip="Hola colega!"/>
-
-	  <mx:ComboBox id="fondoCB" dataProvider="{fondosAC}" labelField="label" top="130" left="25"/>
 
 </mx:WindowedApplication>
