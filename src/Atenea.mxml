@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:WindowedApplication xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:c="custom.*" 
+	xmlns:chrome="custom.chrome.*" showFlexChrome="true" backgroundColor="0x555555" showStatusBar="false" showGripper="true"
+	 title="Atenea Beta" titleAlignment="center" fontSize="12" layout="absolute" creationComplete="init()"
+	  minHeight="500" minWidth="800" xmlns:flash.filters="flash.filters.*" xmlns:views="views.*">
+		
+		
+		<mx:Script source="as/Atenea.as"/>
+		<mx:Style source="css/Atenea.css"/>
+	   		
+	  
+	  <chrome:chrome styleName="{fondoCB.selectedItem.data}"
+	  	 top="50" left="10" bottom="10" right="10" borderStyle="none" cornerRadius="0" borderColor="#FFFFFF" contentBackgroundAlpha="0.18">
+	  	<mx:Box top="0" bottom="0" left="0" right="0" width="100%" height="100%" styleName="chromeborde" />
+	  	<chrome:sombra top="0" bottom="0" left="0" right="0" />
+	  	<mx:Image source="assets/skins/custom/icon_gripper.png" mouseDown="nativeWindow.startResize()" right="3" bottom="3"/>
+	  	
+		<mx:ApplicationControlBar dock="true" height="55.3" left="0" right="0" top="0" mouseDown="nativeWindow.startMove()">
+		     <mx:Spacer width="100%"/>
+		     <mx:VBox height="100%" >
+		     	<chrome:buscar id="address" bottom="0" width="215" height="22" mouseDown="mouseD(event)" color="#000000"/>
+		     	<mx:ProgressBar id="loading" top="0" width="{address.width}" indeterminate="true" visible="false" 
+		     		labelPlacement="right" label=" "/>
+		     </mx:VBox>
+		     <mx:Button label="Buscar!" click="onSearch(event)" id="buscarBtn" fontWeight="bold" fontSize="13"/>
+		     <!--mx:Button label="Parar" click="parar()" enabled="false" id="pararBtn" fontWeight="normal" fontSize="13"/-->
+		     <mx:Spacer/>
+		     <chrome:botones_up />
+		</mx:ApplicationControlBar>
+		
+	   <mx:TabNavigator id="sections" top="63" bottom="108" left="10" right="9" backgroundAlpha="0.76" alpha="1.0" creationComplete="initTab()">
+	      
+	        <views:Search id="search" label="Buscar" icon="@Embed('assets/skins/custom/Tab_search.png')" width="95%" height="100%"/>
+		  	
+		  	<views:Playlists id="playlist" label="Reproducción" icon="@Embed('assets/skins/custom/Tab_play.png')"/> 
+		        
+		  	<views:Downloads id="downloads" label="Descargas" icon="@Embed('assets/skins/custom/Tab_down.png')"
+		  		directory="{directory}"/>
+		  	
+		  	<mx:Canvas label="FLV Player" enabled="true" >   	 		
+		  	 		<c:megaplayer left="10" top="50" bottom="10" right="10" id="player" vcode="{link.text}"/>
+		  	 		<mx:TextInput left="10" top="15" width="211" id="link"/>
+		  	 		<mx:Label text="{player.tiempoTotal}  %  Cargado Streaming: {player.bLoaded} mb TotalStreaming: {player.bTotales} mb Total Real: {player.tamanoReal} Tiempo total: {player.tiempoTReal}  Tiempo de la pista FLV: {player.tiempoTStreaming}" y="-1" x="8"/>
+		  	 		<mx:Button label="Play!" left="229" top="15" click="player.reproducir(link.text, '')"/>
+		  	 		<mx:Button label="Full Screen" left="292" top="15" click="player.goFull()"/>
+		  	 		<mx:TextInput x="385" y="15" id="seek" enter="//player.seek(Number(seek.text))"/>
+		  	 		<mx:ProgressBar mode="manual" source="{player.tiempoTotal}" maximum="100"  labelPlacement="center" label="{player.tiempoTotal} %" top="18" right="13" left="553"/>
+		   	</mx:Canvas>
+		   	
+		   	<mx:Canvas label="Ayuda" icon="@Embed('assets/skins/custom/Tab_help.png')">
+		   	 		<mx:Button click="setMisDescargas()"
+		   	 			 label="Cambiar" top="0" left="10" width="79" fontWeight="normal" fontSize="14"/>
+		   	 		<mx:Label  text="{'Directorio de descarga: '+misDescargas}"  left="97" top="5"/>
+		   	 		<mx:LinkButton label="Acerca de Atenea..." left="25" top="48" click="verSplash()"/>
+		   	 		<mx:LinkButton label="Acerca de AureumDigital..." left="25" top="78" 
+		   	 			click="getURL('http://www.aureumdigital.com')"/>
+		   	 		<mx:LinkButton label="Acuerdo de Licencia" left="25" top="108" 
+		   	 			click="getURL('http://creativecommons.org/licenses/by-nc-nd/3.0/es/')"/>
+		   	 		<mx:LinkButton label="Buscar Actualización" left="25" top="140" 
+		   	 			click="Actualicer.instance.check()"/>
+		   	 		<mx:Image left="25" bottom="10">
+		   	 			<mx:source>assets/88x31.png</mx:source>
+		   	 		</mx:Image>
+		   	 		<mx:HRule left="10" right="10" top="30"/>
+		   	 		<mx:Panel layout="absolute" left="300" top="50" title="Introducir Usuario:">
+		   	 			<mx:Form>
+		   	 				<mx:FormItem label="Usuario">
+		   	 					<mx:TextInput/>
+		   	 				</mx:FormItem>
+		   	 				<mx:FormItem label="Contraseña">
+		   	 					<mx:TextInput displayAsPassword="true"/>
+		   	 				</mx:FormItem>
+		   	 				<mx:FormItem>
+		   	 					<mx:Button label="Guardar"/>
+		   	 				</mx:FormItem>
+		   	 			</mx:Form>
+		   	 		</mx:Panel>
+		   	</mx:Canvas>
+		   	
+		</mx:TabNavigator>
+		    <views:SuperPlayer id="playero" headerHeight="0"
+		     right="10" left="10" bottom="5" height="100" backgroundAlpha="0.73"/>
+		     
+		</chrome:chrome>
+	  <mx:Image source="assets/title.png" x="8" y="-4" mouseDown="nativeWindow.startMove()" toolTip="Hola colega!"/>
+	  <mx:Style source="flex_skins.css"/>
+	  <mx:ComboBox id="fondoCB" dataProvider="{fondosAC}" labelField="label" top="130" left="25"/>
+
+</mx:WindowedApplication>
