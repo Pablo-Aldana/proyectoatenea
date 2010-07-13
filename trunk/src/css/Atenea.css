@@ -1,0 +1,234 @@
+/* CSS file */
+Application{
+	font-size:11;
+	font-family:Myriad;
+	theme-color: #dddddd;
+}
+
+sombra {
+	backgroundSize: "100%";
+	
+}
+
+.ninia {
+	backgroundSize: "100%";
+	backgroundImage: Embed(source="assets/skins/custom/chrome/chrome_pink.png");
+}
+.ninio {
+	backgroundSize: "100%";
+	backgroundImage: Embed(source="assets/skins/custom/chrome/chrome_blue.png");
+}
+.alien {
+	backgroundSize: "100%";
+	backgroundImage: Embed(source="assets/skins/custom/chrome/chrome_green.png");
+}
+		
+.borde {
+	backgroundSize: "100%";
+	backgroundImage: Embed(source="assets/skins/custom/chrome/border.png");
+}
+
+.descargaBar{
+	bar-color:green;
+}
+
+.chromeborde {
+	backgroundSize: "100%";
+	backgroundImage: Embed(source="assets/skins/custom/chrome/chrome_border.png");
+}
+	
+TabNavigator {
+	background-alpha: 30;
+	cornerRadius: 6;
+	horizontal-align: right;
+	tab-height: 49;
+	tab-width: 93;
+	tabStyleName: "myTabs";
+	firstTabStyleName: "myTabs";
+	lastTabStyleName: "myTabs";
+}	
+		   
+.myTabs {
+	cornerRadius:10;
+	highlightAlphas: 1, 0.22;
+	fillAlphas: 1, 0.53;
+	fillColors: #ffffff, #ffffff;
+	backgroundColor: #ffffff;
+	borderColor: #cccccc;
+	color: #000033;
+	textRollOverColor: #000033;
+	themeColor: #0099ff;
+	textAlign: center;
+	fontSize: 10;
+}
+			
+DataGrid {
+	backgroundAlpha: 0.6;
+	backgroundColor: #ffffff;
+	headerColors: #666666, #33ffcc;
+	verticalGridLines: false;
+	useRollOver: true;
+	rollOverColor: #cccccc;
+	textRollOverColor: #003300;
+	selectionColor: #336699;
+	textSelectedColor: #ffffff;
+	dropShadowEnabled: true;
+	shadowDistance: 0;
+}
+			
+ToolTip {
+	backgroundAlpha: 0.8;
+	cornerRadius: 5;
+	backgroundColor: #000000;
+	fontFamily: Myriad;
+	fontSize: 12;
+	fontWeight: bold;
+	color: #FFFFFF;
+}
+			
+HSlider {
+   labelOffset: -13;
+   thumbOffset: 8;
+   tickLength: 0;
+   showTrackHighlight: true;
+   borderColor: #ffffff;
+   trackColors: #ffffff, #ffffff;
+   themeColor: #009900;
+   fillAlphas: 0, 0, 0, 0;
+   fillColors: #ffffff, #ffffff, #ffffff, #ffffff;
+}
+			
+		
+.MinBtn {
+	icon: Embed(source="assets/skins/custom/icon_minimize_up.png");
+	upIcon: Embed(source="assets/skins/custom/icon_minimize_up.png");
+	overIcon: Embed(source="assets/skins/custom/icon_minimize_over.png");
+	downIcon: Embed(source="assets/skins/custom/icon_minimize_down.png");
+	disabledSkin: Embed(source="assets/skins/custom/clear.png");
+	downSkin: Embed(source="assets/skins/custom/clear.png");
+	overSkin: Embed(source="assets/skins/custom/clear.png");
+	upSkin: Embed(source="assets/skins/custom/clear.png");	
+}
+
+.MaxBtn {
+	icon: Embed(source="assets/skins/custom/icon_expand_up.png");
+	upIcon: Embed(source="assets/skins/custom/icon_expand_up.png");
+	overIcon: Embed(source="assets/skins/custom/icon_expand_over.png");
+	downIcon: Embed(source="assets/skins/custom/icon_expand_down.png");
+	disabledSkin: Embed(source="assets/skins/custom/clear.png");
+	downSkin: Embed(source="assets/skins/custom/clear.png");
+	overSkin: Embed(source="assets/skins/custom/clear.png");
+	upSkin: Embed(source="assets/skins/custom/clear.png");	
+}
+
+.ResBtn {
+	icon: Embed(source="assets/skins/custom/icon_res_up.png");
+	upIcon: Embed(source="assets/skins/custom/icon_res_up.png");
+	overIcon: Embed(source="assets/skins/custom/icon_res_over.png");
+	downIcon: Embed(source="assets/skins/custom/icon_res_down.png");
+	disabledSkin: Embed(source="assets/skins/custom/clear.png");
+	downSkin: Embed(source="assets/skins/custom/clear.png");
+	overSkin: Embed(source="assets/skins/custom/clear.png");
+	upSkin: Embed(source="assets/skins/custom/clear.png");	
+}
+
+.CloBtn {
+	icon: Embed(source="assets/skins/custom/icon_close_up.png");
+	upIcon: Embed(source="assets/skins/custom/icon_close_up.png");
+	overIcon: Embed(source="assets/skins/custom/icon_close_over.png");
+	downIcon: Embed(source="assets/skins/custom/icon_close_down.png");
+	disabledSkin: Embed(source="assets/skins/custom/clear.png");
+	downSkin: Embed(source="assets/skins/custom/clear.png");
+	overSkin: Embed(source="assets/skins/custom/clear.png");
+	upSkin: Embed(source="assets/skins/custom/clear.png");
+}
+
+buscar {
+	backgroundSize: "100%";
+	verticalAlign: middle;
+	horizontalAlign: left;
+	horizontalGap: 5;
+	backgroundImage: Embed(source="assets/skins/custom/textinput_background.png",
+	    scaleGridLeft="5", scaleGridTop="5", scaleGridRight="120", scaleGridBottom="13");
+}
+
+.buscarst {
+	backgroundAlpha: 0;
+	focusAlpha: 0;
+	color: #F7F7F7;
+	fontSize: 12;
+	borderStyle: solid;
+	borderThickness: 0;
+	paddingTop: 0;
+}
+
+Panel{
+	borderColor: #F4F4F4;
+	borderAlpha: 0.5;
+	borderThicknessBottom: 9;
+	roundedBottomCorners: true;
+	cornerRadius: 10;
+	backgroundAlpha: 0.99;
+	backgroundColor: #ffffff;
+	dropShadowEnabled: true;
+	shadowDistance: 2;
+	shadowDirection: center;
+}
+
+Play 
+{
+	upSkin: Embed("assets/skins/custom/controls/play.png");
+	overSkin: Embed("assets/skins/custom/controls/play_over.png");
+	downSkin: Embed("assets/skins/custom/controls/play_click.png");
+	disabledSkin: Embed("assets/skins/custom/controls/play_disabled.png");
+}
+
+ REW 
+{
+	upSkin: Embed("assets/skins/custom/controls/rew.png");
+	overSkin: Embed("assets/skins/custom/controls/rew_over.png");
+	downSkin: Embed("assets/skins/custom/controls/rew_click.png");
+	disabledSkin: Embed("assets/skins/custom/controls/rew_disabled.png");
+}
+
+ FFD 
+{
+	upSkin: Embed("assets/skins/custom/controls/ffd.png");
+	overSkin: Embed("assets/skins/custom/controls/ffd_over.png");
+	downSkin: Embed("assets/skins/custom/controls/ffd_click.png");
+	disabledSkin: Embed("assets/skins/custom/controls/ffd_disabled.png");
+}
+
+ Pause 
+{
+	upSkin: Embed("assets/skins/custom/controls/pause.png");
+	overSkin: Embed("assets/skins/custom/controls/pause_over.png");
+	downSkin: Embed("assets/skins/custom/controls/pause_click.png");
+}
+
+ApplicationControlBar {
+   highlightAlphas: 0.35, 0.16;
+   shadowDistance: 1;
+   cornerRadius: 19;
+   shadowDirection: center;
+   dropShadowColor: #ffffff;
+}
+
+/*
+//------------------------------
+//  Font
+//------------------------------
+*/
+
+@font-face {
+src: url("../assets/fonts/MyriadPro-Regular.otf") ;
+fontFamily: Myriad;
+font-weight:normal;
+advanced-anti-aliasing: true;
+}
+@font-face {
+src: url("../assets/fonts/MyriadPro-Bold.otf") ;
+fontFamily: Myriad;
+font-weight:bold;
+advanced-anti-aliasing: true;
+}

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%">
+	<mx:HBox x="0" y="0" width="100%" height="100%" verticalAlign="middle" horizontalAlign="center">
+		<mx:ProgressBar xmlns:mx="http://www.adobe.com/2006/mxml" source="{data.pe}" mode="polled" labelPlacement="center" label="{data.porcentaje}" width="100%" height="100%" styleName="descargaBar"/>
+		<mx:Button id="desca" label="Pause" click="data.pausa(desca)" enabled="{!(data.item.progress >=100)}"/>
+	</mx:HBox>
+</mx:Canvas>

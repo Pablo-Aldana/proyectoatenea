@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" creationComplete="init()">
+
+	<mx:Script>
+		<![CDATA[
+			import au.searchers.DilandauSearch;
+			import au.searchers.GoearDetails;
+			import au.searchers.ListenGoSearch;
+			import au.searchers.GoogleSearch;
+			import au.searchers.SearchEvent;
+			import au.media.SongEvent;
+			import mx.collections.ArrayCollection;
+			import au.searchers.GoearSearch;
+			
+			//public var gosearch:GoearSearch;  //volver a poner este cuando desbloqueen goear
+			//public var searcher:ListenGoSearch;
+			public var searcher:DilandauSearch;
+			
+			[Bindable] public var processed:ArrayCollection;
+			
+			public function init():void
+			{
+				processed = new ArrayCollection();
+				searcher = new DilandauSearch(processed);
+
+				searcher.addEventListener(SearchEvent.START,onStart);
+				searcher.addEventListener(SearchEvent.STOP,onStop);
+			}
+				
+			public function onStart(e:SearchEvent):void
+			{
+				e= new SearchEvent(SearchEvent.START);
+				dispatchEvent(e);
+			}
+			public function onStop(e:SearchEvent):void
+			{
+				e= new SearchEvent(SearchEvent.STOP);
+				dispatchEvent(e);
+			}		
+		
+			public function download () : void
+			{
+				this.dispatchEvent(new SongEvent(SongEvent.DOWNLOAD,lista.selectedItem));
+			}
+			
+			public function onDoubleClick () : void 
+			{
+				if(lista.selectedItem!=null)
+					this.dispatchEvent(new SongEvent(SongEvent.PLAY,lista.selectedItem));
+			}
+			
+			public function addToList () : void 
+			{
+				this.dispatchEvent(new SongEvent(SongEvent.TOLIST,lista.selectedItem));
+			}
+		]]>
+	</mx:Script>
+
+	<mx:DataGrid doubleClickEnabled="true" dataProvider="{processed}" doubleClick="onDoubleClick()" 
+    	id="lista" top="27" bottom="10.100006" right="10" left="10">
+    	<mx:columns>
+    		<mx:DataGridColumn dataField="title" headerText="Titulo"/>
+    		<mx:DataGridColumn dataField="artist" headerText="Artista"/>
+    	</mx:columns>	        	
+    </mx:DataGrid>	
+    <mx:Button label="Descargar" enabled="{lista.selectedIndex>=0}" click="download()" left="131" height="25" top="0" fontWeight="normal"/>
+    <mx:Button label="Añadir a lista" enabled="{lista.selectedIndex>=0}" click="addToList()" left="10" height="25" width="113" top="0" fontWeight="normal"/>
+    <mx:Label text="{'Resultados: '+processed.length}" top="1.7" right="10" width="152" fontSize="14" textAlign="right"/>
+</mx:Canvas>
