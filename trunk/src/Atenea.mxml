@@ -83,7 +83,7 @@
 		     
 		</chrome:chrome>
 	  <mx:Image source="assets/title.png" x="8" y="-4" mouseDown="nativeWindow.startMove()" toolTip="Hola colega!"/>
-	  <mx:Style source="flex_skins.css"/>
+
 	  <mx:ComboBox id="fondoCB" dataProvider="{fondosAC}" labelField="label" top="130" left="25"/>
 
 </mx:WindowedApplication>
