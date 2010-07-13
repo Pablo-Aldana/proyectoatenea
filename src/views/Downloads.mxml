@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml">
+
+	<mx:Script>
+		<![CDATA[
+			import object.Descargar;
+			import au.media.Song;
+			import mx.collections.ArrayCollection;
+			
+			[Bindable] public var downloads:ArrayCollection;
+			[Bindable] public var directory:File;
+			
+			public function init():void
+			{
+				downloads=new ArrayCollection();
+			}
+			
+			public function addDownload(song:Song):void
+			{
+					var d:Descargar=new Descargar(song,directory);
+					downloads.addItem(d);
+			}
+		]]>
+	</mx:Script>
+
+	 <mx:DataGrid dataProvider="{downloads}" doubleClickEnabled="true" 
+    	id="desc" top="0" bottom="10" right="10" left="10">      	
+    	<mx:columns>
+    		<mx:DataGridColumn dataField="nombre" headerText="Archivo" width="180"/>
+    		<mx:DataGridColumn dataField="velocidad" headerText="Velocidad(KB/s)" width="100"/>
+    		<mx:DataGridColumn  itemRenderer="custom.DescBar" headerText="Progreso" width="200"/>
+    		<mx:DataGridColumn dataField="completado" headerText="Completado/Total(KB)"/>
+    		<mx:DataGridColumn dataField="restante" headerText="Restante"/>
+    	</mx:columns>
+    </mx:DataGrid>	 
+</mx:Canvas>

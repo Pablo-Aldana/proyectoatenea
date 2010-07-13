@@ -1,0 +1,70 @@
+DataGrid
+{
+	headerBackgroundSkin: Embed(skinClass="DataGrid_headerBackgroundSkin");
+	columnDropIndicatorSkin: Embed(skinClass="DataGrid_columnDropIndicatorSkin");
+	columnResizeSkin: Embed(skinClass="DataGrid_columnResizeSkin");
+	headerSeparatorSkin: Embed(skinClass="DataGrid_headerSeparatorSkin");
+	stretchCursor: Embed(skinClass="DataGrid_stretchCursor");
+	sortArrowSkin: Embed(skinClass="DataGrid_sortArrowSkin");
+}
+Button
+{
+	skin: Embed(skinClass="Button_skin");
+}
+CursorManager
+{
+	busyCursor: Embed(skinClass="CursorManager_busyCursor");
+}
+DragManager
+{
+	copyCursor: Embed(skinClass="DragManager_copyCursor");
+	defaultDragImageSkin: Embed(skinClass="DragManager_defaultDragImageSkin");
+	linkCursor: Embed(skinClass="DragManager_linkCursor");
+	moveCursor: Embed(skinClass="DragManager_moveCursor");
+	rejectCursor: Embed(skinClass="DragManager_rejectCursor");
+}
+/*List
+{
+	borderSkin: Embed(skinClass="List_borderSkin");
+}
+Menu
+{
+	branchDisabledIcon: Embed(skinClass="Menu_branchDisabledIcon");
+	branchIcon: Embed(skinClass="Menu_branchIcon");
+	checkDisabledIcon: Embed(skinClass="Menu_checkDisabledIcon");
+	checkIcon: Embed(skinClass="Menu_checkIcon");
+	radioDisabledIcon: Embed(skinClass="Menu_radioDisabledIcon");
+	radioIcon: Embed(skinClass="Menu_radioIcon");
+	separatorSkin: Embed(skinClass="Menu_separatorSkin");
+}*/
+Panel
+{
+	closeButtonSkin: Embed(skinClass="Panel_closeButtonSkin");
+	controlBarBackgroundSkin: Embed(skinClass="Panel_controlBarBackgroundSkin");
+}
+ProgressBar
+{
+	indeterminateSkin: Embed(skinClass="ProgressBar_indeterminateSkin");
+}
+/*
+RadioButton
+{
+	icon: Embed(skinClass="RadioButton_icon");
+}
+*/
+Slider
+{
+	thumbSkin: Embed(skinClass="Slider_thumbSkin");
+	trackHighlightSkin: Embed(skinClass="Slider_trackHighlightSkin");
+	trackSkin: Embed(skinClass="Slider_trackSkin");
+}
+TabBar
+{
+	tabStyleName: "tabBarTab";
+	firstTabStyleName: "tabBarTab";
+	lastTabStyleName: "tabBarTab";
+}
+.tabBarTab
+{
+	skin: Embed(skinClass="TabBar$tab_skin");
+}

@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="utf-8"?>
+<custom:FSVideoDisplay xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:custom="object.*" creationComplete="init()" >
+	<mx:Script>
+		<![CDATA[
+			import mx.core.UIComponent;
+			import mx.core.Application;
+			import flash.utils.setInterval;
+			import flash.utils.clearInterval;
+			import mx.events.*;
+
+			
+			[Bindable] public var vcode:String;
+			[Bindable] public var tiempoTotal:String;
+			
+			[Bindable]public var bTotales:Number=0;
+			[Bindable]public var bLoaded:Number=0;
+			[Bindable]public var tiempoTReal:String;
+			[Bindable]public var tiempoTStreaming:String="";
+			[Bindable]public var tamanoReal:Number=0;
+			private var linkMovie:String;
+			private var req:URLRequest;
+			private var playMove:Number=0;
+			private var nombre:String="";
+			private var vcode1:String="";
+			private var fileIndex:Number=0;
+			private var counter:Number=1;
+			private var loader1:URLLoader = new URLLoader(); 
+			private var k1var:String;
+			private var k2var:String;
+			private var unvar:String;
+			private var defaultBufferSize:uint=40000;
+			private var svar:String;
+			private var bufferStart:Boolean=false;
+		    private var nc:NetConnection;
+		    private var ns:NetStream;
+			private var fileStream:FileStream;
+			private var file:File;
+			private var counter1:Number=0;
+			private var lastBL:Number=0;
+			private var currTime:Number=0;
+			private var bytesTim:Number=0;
+			private var bytesAnt:Number=0;
+			private var tim:Timer;
+			private  var repCount:Number=0;
+			private var inter:Number;
+			private var video:Video;
+			private var php:String;
+			
+			private var times:Array;
+			private var positions:Array;
+
+            private function init():void 
+            {
+            	php="http://localhost/Atenea/videoSeeker.php";
+            	times=new Array();
+            	positions=new Array();
+            	
+            	tim=new Timer(90000000, 0);
+				tim.addEventListener(TimerEvent.TIMER, cambiaLink);
+				loader1.addEventListener(Event.COMPLETE, loadXML);
+            }
+            
+           private function cambiaLink(e:TimerEvent):void
+			{
+				if((bLoaded/bTotales) < 1){
+					//urlStream.close();
+					trace("Stream cerrado, cambiando link, dame 5 segundos");
+					inter=setInterval(reproducir, 5000);
+				}else{
+					tim.stop();
+				}
+			}
+            
+            public function goFull():void {
+            	this.displayState = StageDisplayState.FULL_SCREEN;
+
+            }
+
+			/*private function writeFile(e:ProgressEvent):void {
+				////GUARDA POSICION REPRO
+				if(this.playheadTime>playMove){
+					playMove=this.playheadTime;
+				}
+				
+				if(bLoaded > 512000){
+					if(!this.playing){
+						this.play();
+					}
+				}
+				
+				////PARAMOS VIDEO SI BUFFER
+				if(((this.playheadTime/totalTime)*100)+0.2 >  Number(tiempoTotal)){
+					this.pause();
+				}else{
+			   		this.play();
+				}
+				
+				//////////////CONTROLADORES
+				tiempoTStreaming=String(Math.round(this.totalTime/60))+':'+String(Math.round(this.totalTime%60));
+				tiempoTotal=String(Math.round((e.bytesLoaded/e.bytesTotal)*100));
+            	bTotales=e.bytesTotal;
+            	bLoaded=e.bytesLoaded;
+            	
+            	/////ESCRIBEEE
+				var fileDataNew:ByteArray = new ByteArray();
+								
+				urlStream.readBytes(fileDataNew,0,urlStream.bytesAvailable);
+				fileStream.writeBytes(fileDataNew);
+				
+	        }*/
+			
+			public function reproducir(vcode:String):void
+			{
+				vcode1=vcode;
+				loader1.load(new URLRequest("http://www.megavideo.com/xml/videolink.php?v="+vcode1)); 
+				//loader1.load(new URLRequest("http://www.megavideo.com/xml/videolink.php?v=" +vcode + "&width=640&id=" + new Date().getTime() + "&u="+user));
+				//loader1.load(new URLRequest("http://www.megavideo.com/xml/player_login.php?u="+user+"&v="+vcode));
+			}
+			
+			private function reproducir1():void{
+				trace("ESTOY EN REPRODUCIR 1");
+				clearInterval(inter);				
+				loader1.load(new URLRequest("http://www.megavideo.com/xml/videolink.php?v=" +vcode + "&width=640&id=" + new Date().getTime() + "&u=hf7l75vfl5x"));
+			}
+			
+			////////////FUNCION DESENCRIPTAR
+			private function decrypt(str:String, key1:Number, key2:Number):String
+			{
+			    var _loc1:Array = [];
+			    for (var _loc3:Number = 0; _loc3 < str.length; ++_loc3)
+			    {
+			        switch (str.charAt(_loc3))
+			        {
+			            case "0":
+			            {
+			                _loc1.push("0000");
+			                break;
+			            } 
+			            case "1":
+			            {
+			                _loc1.push("0001");
+			                break;
+			            } 
+			            case "2":
+			            {
+			                _loc1.push("0010");
+			                break;
+			            } 
+			            case "3":
+			            {
+			                _loc1.push("0011");
+			                break;
+			            } 
+			            case "4":
+			            {
+			                _loc1.push("0100");
+			                break;
+			            } 
+			            case "5":
+			            {
+			                _loc1.push("0101");
+			                break;
+			            } 
+			            case "6":
+			            {
+			                _loc1.push("0110");
+			                break;
+			            } 
+			            case "7":
+			            {
+			                _loc1.push("0111");
+			                break;
+			            } 
+			            case "8":
+			            {
+			                _loc1.push("1000");
+			                break;
+			            } 
+			            case "9":
+			            {
+			                _loc1.push("1001");
+			                break;
+			            } 
+			            case "a":
+			            {
+			                _loc1.push("1010");
+			                break;
+			            } 
+			            case "b":
+			            {
+			                _loc1.push("1011");
+			                break;
+			            } 
+			            case "c":
+			            {
+			                _loc1.push("1100");
+			                break;
+			            } 
+			            case "d":
+			            {
+			                _loc1.push("1101");
+			                break;
+			            } 
+			            case "e":
+			            {
+			                _loc1.push("1110");
+			                break;
+			            } 
+			            case "f":
+			            {
+			                _loc1.push("1111");
+			                break;
+			            } 
+			        } // End of switch
+			    } // end of for
+			    _loc1 = _loc1.join("").split("");
+			    var _loc6:Array = [];
+			    for (var _loca:Number = 0; _loca < 384; ++_loca)
+			    {
+			        key1 = (key1 * 11 + 77213) % 81371;
+			        key2 = (key2 * 17 + 92717) % 192811;
+			        _loc6[_loca] = (key1 + key2) % 128;
+			    } // end of for
+			    for (var _locb:Number = 256; _locb >= 0; --_locb)
+			    {
+			        var _loc5:String = _loc6[_locb];
+			        var _loc4:Number = _locb % 128;
+			        var _loc8:String = _loc1[_loc5];
+			        _loc1[_loc5] = _loc1[_loc4];
+			        _loc1[_loc4] = _loc8;
+			    } // end of for
+			    for (var _locc:Number = 0; _locc < 128; ++_locc)
+			    {
+			        _loc1[_locc] = _loc1[_locc] ^ _loc6[_locc + 256] & 1;
+			    } // end of for
+			    var _loc12:String = _loc1.join("");
+			    var _loc7:Array = [];
+			    for (var _locd:Number = 0; _locd < _loc12.length; _locd = _locd + 4)
+			    {
+			        var _loc9:String = _loc12.substr(_locd, 4);
+			        _loc7.push(_loc9);
+			    } // end of for
+			    var _loc2:Array = [];
+			    for (var _loce:Number = 0; _loce < _loc7.length; ++_loce)
+			    {
+			        switch (_loc7[_loce])
+			        {
+			            case "0000":
+			            {
+			                _loc2.push("0");
+			                break;
+			            } 
+			            case "0001":
+			            {
+			                _loc2.push("1");
+			                break;
+			            } 
+			            case "0010":
+			            {
+			                _loc2.push("2");
+			                break;
+			            } 
+			            case "0011":
+			            {
+			                _loc2.push("3");
+			                break;
+			            } 
+			            case "0100":
+			            {
+			                _loc2.push("4");
+			                break;
+			            } 
+			            case "0101":
+			            {
+			                _loc2.push("5");
+			                break;
+			            } 
+			            case "0110":
+			            {
+			                _loc2.push("6");
+			                break;
+			            } 
+			            case "0111":
+			            {
+			                _loc2.push("7");
+			                break;
+			            } 
+			            case "1000":
+			            {
+			                _loc2.push("8");
+			                break;
+			            } 
+			            case "1001":
+			            {
+			                _loc2.push("9");
+			                break;
+			            } 
+			            case "1010":
+			            {
+			                _loc2.push("a");
+			                break;
+			            } 
+			            case "1011":
+			            {
+			                _loc2.push("b");
+			                break;
+			            } 
+			            case "1100":
+			            {
+			                _loc2.push("c");
+			                break;
+			            } 
+			            case "1101":
+			            {
+			                _loc2.push("d");
+			                break;
+			            } 
+			            case "1110":
+			            {
+			                _loc2.push("e");
+			                break;
+			            } 
+			            case "1111":
+			            {
+			                _loc2.push("f");
+			                break;
+			            } 
+			        } // End of switch
+			    } // end of for
+			    return (_loc2.join(""));
+			} // End of the function
+			
+			private function netStatus(e:NetStatusEvent):void{
+				switch(e.info.code){
+					case "NetStream.Buffer.Full":break;
+					case "NetStream.Buffer.Empty":break;
+					case "NetStream.Play.Stop":break;
+					case "NetStream.Play.Start":break;
+					case "NetStream.Buffer.Flush":break;
+				}
+			}
+			
+			public function seek(pos:Number):void {
+				/*if (pos <= 0 ) {
+					ns.play(linkMovie);
+				}
+			
+				for (var i:Number=0; i < times.length; i++){
+					var j = i + 1;
+					if( (times[i] <= pos) && (times[j] >= pos ) ){
+						trace("match at " + times[i] + " and " +  positions[i]);
+						ns.play( php + "?videoUrl=" + linkMovie + "&seekPos=" + positions[i]);
+						trace("play " + php + "?videoUrl=" + linkMovie + "&seekPos=" + positions[i]);
+						break;
+					}
+				}*/
+				//ns.pause();
+				//ns.play('http://localhost/Atenea/videoSeeker2.php?videoUrl=video.flv&seekPos=50');
+				//ns.play('http://localhost/Atenea/flvprovider.php?videoUrl='+linkMovie+'&seekPos='+pos);
+			}
+			
+			public function onMetaData(infoObject:Object):void
+			{
+			    times=infoObject.keyframes.times;
+			    positions=infoObject.keyframes.filepositions;
+			}
+
+			
+			private function loadXML(e:Event):void
+			{
+				//OBTENIENDO XML"
+				var ROWS:XML = new XML(e.target.data);
+			    k1var=ROWS.ROW[0].@k1;
+				k2var=ROWS.ROW[0].@k2;
+				unvar=ROWS.ROW[0].@un;
+				svar=ROWS.ROW[0].@s;
+				//BUSCANDO LINK"
+				tiempoTReal=ROWS.ROW[0].@runtimehms;
+				tamanoReal=ROWS.ROW[0].@size;
+				nombre=ROWS.ROW[0].@title;
+				
+				nc=new NetConnection();
+				
+				nc.connect(null);
+				ns=new NetStream(nc);
+				ns.client=this;
+				ns.bufferTime=2;
+				ns.addEventListener(NetStatusEvent.NET_STATUS, netStatus);
+				
+				video = new Video();
+				video.width = this.width;
+				video.height = this.height;
+				video.attachNetStream(ns);
+				this.addChild(video);
+				
+				//tim.start();
+				
+				//DESCARGAMOS
+				linkMovie="http://www"+svar+".megavideo.com/files/"+decrypt(unvar, Number(k1var), Number(k2var))+"/";
+				trace("NUEVO LINK: "+linkMovie);
+				//ns.play(linkMovie);
+				
+			}
+			
+			
+			
+		]]>
+	</mx:Script>
+</custom:FSVideoDisplay>

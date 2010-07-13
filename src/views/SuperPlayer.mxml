@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:c="custom.*" creationComplete="init()">
+    <mx:Style>
+		.barraProgreso
+		{
+		    width: 480px;
+		    height: 30px;
+		    background: url(progressBar.png) left no-repeat;
+		    padding: 0;
+		    margin: 0;
+		}
+
+    </mx:Style>
+    
+    <mx:Script>
+    	<![CDATA[
+    		import mx.formatters.DateFormatter;
+    		import au.singleton.Player;
+    		[Bindable] public var player:Player
+    		
+    		public function init():void
+    		{
+    			player=Player.instance;
+    		}
+    		
+    		
+			public function formatearSlider(val:Number):String 
+			{
+				var df:DateFormatter = new DateFormatter();
+				df.formatString = "NN:SS";
+				var t:Date=new Date(val);
+				//meter aqui un dateformater para que salga mm:ss   ///HECHO
+				return df.format(t);
+			}
+			
+			public function formatearVolumen(val:Number):String 
+			{
+				return Math.round(val)+ " %";
+			}
+					
+			public function goToTime():void
+			{
+				player.playing=true;
+				//pauseButton.visible=true;
+				player.goTo(slider.value);			
+			};
+			
+			
+    	]]>
+    </mx:Script>
+    
+   	<mx:Canvas height="100%" width="100%">
+		     <mx:Label id="titulo" text="{' Título:  '+player.song.title}" left="100" top="0" textAlign="left" right="99" fontSize="13"/>  
+		     <mx:Label id="artista" text="{' Artista: '+player.song.artist}" left="100" top="16" textAlign="left" right="99" fontSize="13"/>  
+     <mx:Canvas bottom="0" width="143" height="88" right="0" >
+        <c:REW id="prevButton" click="player.prev()" x="29.05" y="25" enabled="{Boolean(player.song)}"/>
+        <c:FFD id="nextButton" click="player.next()" x="89" y="25" enabled="{Boolean(player.song)}"/>
+        <c:Play id="playButton" visible="{!player.playing}" enabled="{Boolean(player.song)}" 
+        	click="player.pause()" x="54" y="23"/>
+        <c:Pause id="pauseButton" visible="{player.playing}" click="player.pause()" y="23" x="54"/>
+    </mx:Canvas>    
+     <mx:ProgressBar labelPlacement="top" right="155.81451" left="100" bottom="36.449997" id="bprogreso" 
+     	mode="manual" label=" " styleName="barraProgreso" height="28.000002"/>
+     <mx:Label text="{player.song.time+' / '+player.song.totalTime}" height="18" fontSize="13" right="156" bottom="42.25" width="79" textAlign="right"/>
+     <mx:ProgressBar labelPlacement="top" id="bcarga" mode="polled" source="{player.song}"
+     	 barColor="0x999999" label=" " height="28" bottom="36.25" left="100" right="155.79999"/>
+     <mx:HSlider minimum="0" id="slider" height="12"
+     	    allowTrackClick="true" enabled="{Boolean(player.song)}"
+            liveDragging="true"
+            dataTipFormatFunction="formatearSlider" maximum="{player.song.length}" value="{player.song.position}"
+            change="goToTime();" left="93.75" right="151" bottom="27.25"/>
+    <mx:HBox width="219.51613" verticalAlign="bottom" horizontalAlign="left" height="20.967741" bottom="3" left="100">
+    	<mx:Image source="assets/skins/custom/volumen/Vol.png" width="20" height="18"/>
+    	<mx:HSlider minimum="0" maximum="100" value="100" id="vol"
+    	    allowTrackClick="true" 
+    	      liveDragging="true"
+    	      dataTipFormatFunction="formatearVolumen"
+    	      change="player.setVolume(vol.value/100);" width="157" height="22"/>
+    </mx:HBox>
+    <mx:Image id="image" source="{player.song.image.path}" left="5" top="5" width="80" height="80"/>
+     
+   </mx:Canvas>
+</mx:Panel>

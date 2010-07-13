@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml"
+	layout="vertical"
+	creationComplete="inicio();"
+	click="PopUpManager.removePopUp(this)"
+	showCloseButton="false" styleName="splash" backgroundAlpha="0.51" width="578">
+
+	<mx:Style>
+		.splash {
+		   borderAlpha: 0;
+		   borderThicknessLeft: 0;
+		   borderThicknessTop: 0;
+		   borderThicknessBottom: 0;
+		   borderThicknessRight: 0;
+		   cornerRadius: 0;
+		   headerHeight: 0;
+		   backgroundAlpha: 1;
+		   shadowDistance: 1;
+		   shadowDirection: right;
+		   dropShadowColor: #000000;
+		}
+	</mx:Style>
+
+	<mx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import mx.managers.PopUpManager;
+						
+			private function inicio():void {
+                // Center the TitleWindow container 
+                PopUpManager.centerPopUp(this);
+            }
+            
+		]]>
+	</mx:Script>
+       	<mx:Image source="/assets/splash.png"/>
+	
+</mx:TitleWindow>
