@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:WindowedApplication xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:c="custom.*" 
-	xmlns:chrome="custom.chrome.*" showFlexChrome="false" showStatusBar="false" showGripper="true"
+	xmlns:chrome="custom.chrome.*" showFlexChrome="true" backgroundColor="0x555555" showStatusBar="false" showGripper="true"
 	 title="Atenea Beta" titleAlignment="center" fontSize="12" layout="absolute" creationComplete="init()"
 	  minHeight="500" minWidth="800" xmlns:flash.filters="flash.filters.*" xmlns:views="views.*">
 		
@@ -10,7 +10,7 @@
 	   		
 	  
 	  <chrome:chrome styleName="{fondoCB.selectedItem.data}"
-	  	 top="50" left="10" bottom="10" right="10" borderStyle="none" cornerRadius="0" borderColor="#FFFFFF">
+	  	 top="50" left="10" bottom="10" right="10" borderStyle="none" cornerRadius="0" borderColor="#FFFFFF" contentBackgroundAlpha="0.18">
 	  	<mx:Box top="0" bottom="0" left="0" right="0" width="100%" height="100%" styleName="chromeborde" />
 	  	<chrome:sombra top="0" bottom="0" left="0" right="0" />
 	  	<mx:Image source="assets/skins/custom/icon_gripper.png" mouseDown="nativeWindow.startResize()" right="3" bottom="3"/>
@@ -18,7 +18,7 @@
 		<mx:ApplicationControlBar dock="true" height="55.3" left="0" right="0" top="0" mouseDown="nativeWindow.startMove()">
 		     <mx:Spacer width="100%"/>
 		     <mx:VBox height="100%" >
-		     	<chrome:buscar id="address" bottom="0" width="215" height="22" mouseDown="mouseD(event)"/>
+		     	<chrome:buscar id="address" bottom="0" width="215" height="22" mouseDown="mouseD(event)" color="#000000"/>
 		     	<mx:ProgressBar id="loading" top="0" width="{address.width}" indeterminate="true" visible="false" 
 		     		labelPlacement="right" label=" "/>
 		     </mx:VBox>
