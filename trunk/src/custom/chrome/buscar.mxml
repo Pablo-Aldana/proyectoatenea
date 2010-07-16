@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" 
-	width="100%" height="18"
+	width="100%" height="34" verticalAlign="middle"
 	verticalScrollPolicy="off" horizontalScrollPolicy="off" paddingLeft="5">
 	
 	<mx:Image source="@Embed('../../assets/skins/custom/icon_search_up.png')" />
 	
-	<mx:TextInput height="17" width="100%" id="search" styleName="buscarst" />
+	<mx:TextInput width="100%" id="search" styleName="buscarst" />
 	
 </mx:HBox>

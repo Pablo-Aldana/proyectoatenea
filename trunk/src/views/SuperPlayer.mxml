@@ -53,11 +53,11 @@
 		     <mx:Label id="titulo" text="{' Título:  '+player.song.title}" left="100" top="0" textAlign="left" right="99" fontSize="13"/>  
 		     <mx:Label id="artista" text="{' Artista: '+player.song.artist}" left="100" top="16" textAlign="left" right="99" fontSize="13"/>  
      <mx:Canvas bottom="0" width="143" height="88" right="0" >
-        <c:REW id="prevButton" click="player.prev()" x="29.05" y="25" enabled="{Boolean(player.song)}"/>
-        <c:FFD id="nextButton" click="player.next()" x="89" y="25" enabled="{Boolean(player.song)}"/>
-        <c:Play id="playButton" visible="{!player.playing}" enabled="{Boolean(player.song)}" 
-        	click="player.pause()" x="54" y="23"/>
-        <c:Pause id="pauseButton" visible="{player.playing}" click="player.pause()" y="23" x="54"/>
+        <c:REW label="&lt;&lt;" id="prevButton" click="player.prev()" x="13.05" y="25" enabled="{Boolean(player.song)}" width="45" height="20"/>
+        <c:FFD label=">>" id="nextButton" click="player.next()" x="89" y="25" enabled="{Boolean(player.song)}" width="45" height="20"/>
+        <c:Play label=">" id="playButton" visible="{!player.playing}" enabled="{Boolean(player.song)}" 
+        	click="player.pause()" x="54" y="25" width="45" height="20"/>
+        <c:Pause label="||" id="pauseButton" visible="{player.playing}" click="player.pause()" y="25" x="54" width="45" height="20"/>
     </mx:Canvas>    
      <mx:ProgressBar labelPlacement="top" right="155.81451" left="100" bottom="36.449997" id="bprogreso" 
      	mode="manual" label=" " styleName="barraProgreso" height="28.000002"/>
@@ -68,7 +68,7 @@
      	    allowTrackClick="true" enabled="{Boolean(player.song)}"
             liveDragging="true"
             dataTipFormatFunction="formatearSlider" maximum="{player.song.length}" value="{player.song.position}"
-            change="goToTime();" left="93.75" right="151" bottom="27.25"/>
+            change="goToTime();" left="93.75" right="150.25" bottom="34.25"/>
     <mx:HBox width="219.51613" verticalAlign="bottom" horizontalAlign="left" height="20.967741" bottom="3" left="100">
     	<mx:Image source="assets/skins/custom/volumen/Vol.png" width="20" height="18"/>
     	<mx:HSlider minimum="0" maximum="100" value="100" id="vol"
