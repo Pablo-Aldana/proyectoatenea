@@ -71,7 +71,7 @@ public function init():void
 	//esto se necesita pero probablemten habrá q modificarlo
 	address.search.addEventListener(FlexEvent.ENTER, onSearch);
 	address.search.addEventListener(Event.CHANGE,function f2(e:Event):void{
-		search.searcher.stop();
+		search.stopSearch();
 	});
 	
 	//eventos asociados al searcher
@@ -89,7 +89,7 @@ public function init():void
 
 public function onSearch(e:Event):void
 {
-	search.searcher.search(address.search.text);
+	search.onSearch(address.search.text);
 	sections.selectedChild=search;
 }
 

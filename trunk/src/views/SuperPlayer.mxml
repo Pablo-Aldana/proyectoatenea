@@ -29,7 +29,6 @@
 				var df:DateFormatter = new DateFormatter();
 				df.formatString = "NN:SS";
 				var t:Date=new Date(val);
-				//meter aqui un dateformater para que salga mm:ss   ///HECHO
 				return df.format(t);
 			}
 			

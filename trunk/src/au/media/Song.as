@@ -16,6 +16,8 @@ package au.media
 		[Bindable] public var title:String;
 		[Bindable] public var path:String;
 		[Bindable] public var localPath:String;
+		[Bindable] public var host:String;
+		[Bindable] public var referer:String;
 		
 		[Bindable] public var position:Number;
 		[Bindable] public var length:Number;
@@ -35,20 +37,20 @@ package au.media
 			dbmanager=new DBManager();
 			dbmanager.conectar();
 			
+			
 			if(_id) songID=_id;
-			
-				path="http://www.listengo.com/"+_id;
-				title=_id;
-			
+						
 				onResult(null);
 			
 			if(item){
 				songID=item.songID;
-				path=(item.path.indexOf(".") == 0)?"http://www.listengo.com/"+item.path : item.path;
+				path=item.path;
 				localPath=item.localPath;
 				title=item.title;
 				artist=item.artist;
-				image.search(title+" "+artist);
+				host=item.host;
+				referer=item.referer;
+				//image.search(title+" "+artist);
 								
 				onResult(null);
 			}

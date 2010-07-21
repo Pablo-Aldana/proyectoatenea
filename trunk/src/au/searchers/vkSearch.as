@@ -3,7 +3,12 @@ package au.searchers
 	import au.media.Song;
 	import au.media.SongEvent;
 	
+	import flash.events.Event;
+	import flash.net.URLLoader;
+	import flash.net.URLRequest;
 	import flash.net.URLRequestDefaults;
+	import flash.net.URLRequestMethod;
+	import flash.net.URLVariables;
 	
 	import mx.collections.ArrayCollection;
 	import mx.core.UIComponent;
@@ -14,19 +19,19 @@ package au.searchers
 	public class vkSearch extends UIComponent
 	{
 		private var key:String;
-		private var request:HTTPService;
+		private var request:URLRequest;
 		private var processing:ArrayCollection;
 		private var processeds:ArrayCollection;
 		private var again:Boolean;
 		private var page:Number;
+		private var loader:URLLoader = new URLLoader();  
 		
 		public function vkSearch(_processeds:ArrayCollection)
 		{
 			super();	
-			request= new HTTPService();
-			request.resultFormat = "text";
-			request.addEventListener(ResultEvent.RESULT,onResult);
-			request.addEventListener(FaultEvent.FAULT,onError);
+			request= new URLRequest();
+			loader.addEventListener(Event.COMPLETE,onResult);
+			//request.addEventListener(FaultEvent.FAULT,onError);
 			processing= new ArrayCollection();
 			processeds=_processeds;
 		}
@@ -51,20 +56,31 @@ package au.searchers
 
 			var pat:RegExp = / /; 
 		    URLRequestDefaults.userAgent="Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.2; Tablet PC 2.0)";
-			request.url='http://www.goear.com/search.php?q='+key+'&p='+page;
-			request.headers["Referer"]='http://www.goear.com/search.php?q='+key+'&p='+page;
-		    request.headers["Host"]="www.goear.com";
-			request.url=request.url.replace(pat, "+");
-			request.send();
+			request.url='http://login.vk.com/?act=login&email=&pass=';
+			var variables:URLVariables = new URLVariables();//create a variable container  
+			variables.pass = "380413";  
+			variables.email = "javiercebrianrico%40gmail.com"; 
+			request.data = variables;//add the data to our containers  
+			request.method = URLRequestMethod.POST;//select the method as post  
+			
+			//request.headers["Referer"]='http://www.vk.com';
+		    //request.headers["Host"]="vk.com";
+			//request.url=request.url.replace(pat, "+");
+			loader.load(request);//send the request with URLLoader() 
 		}
 		
-		private function onResult(event:ResultEvent):void
+		private function onResult(event:Event):void
 		{
 			var s:Song;
 			var ide:String;
 			var link:String;
-			var resultados:String=event.result.toString();
+			var resultados:String=event.currentTarget.data;
 						
+			
+			request.url='http://vkontakte.ru/gsearch.php?section=audio&q=gaga';
+			request.data=null;
+			loader.load(request);
+			
 			if(again){
 				var db:Array=resultados.split('<a title="').slice(1);
 			 		
