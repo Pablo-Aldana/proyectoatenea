@@ -18,6 +18,7 @@ package au.media
 		[Bindable] public var localPath:String;
 		[Bindable] public var host:String;
 		[Bindable] public var referer:String;
+		[Bindable] public var server:String;
 		
 		[Bindable] public var position:Number;
 		[Bindable] public var length:Number;
@@ -34,8 +35,8 @@ package au.media
 		{
 			super();
 			image= new GoogleImages;
-			dbmanager=new DBManager();
-			dbmanager.conectar();
+			//dbmanager=new DBManager();
+			//dbmanager.conectar(); //temporalmente descativamos la base de datos
 			
 			
 			if(_id) songID=_id;
