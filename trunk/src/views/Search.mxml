@@ -26,7 +26,7 @@
 				processed = new ArrayCollection();
 				userAgent="Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.2; Tablet PC 2.0)";
 				
-				audioDump = new audioDumpSearcher(processed,userAgent,"www.audiodump.com","http://www.audiodump.com/index.php","http://www.audiodump.com/search.php?q=");
+				audioDump = new audioDumpSearcher(processed,userAgent);
 				dilandau =  new DilandauSearch(processed);
 				
 				audioDump.addEventListener(SearchEvent.START,onStart);
@@ -49,7 +49,7 @@
 			public function onSearch(text:String):void
 			{
 				audioDump.search(text)
-				dilandau.search(text)
+				//dilandau.search(text)
 			}
 			
 			public function stopSearch():void
