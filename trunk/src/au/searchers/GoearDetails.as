@@ -25,6 +25,7 @@ package au.searchers
 			request.headers["Referer"]="http://www.goear.com/listen/"+link;
 			request.headers["Host"]="www.goear.com";
 			request.url = Actualicer.instance.xmlFile+goearID;
+			request.url = "http://www.goear.com/tracker758.php?f="+goearID;
 			request.addEventListener(ResultEvent.RESULT,onResult);
 		}
 		
@@ -35,6 +36,7 @@ package au.searchers
 		
 		private function onResult(e:ResultEvent):void
 		{
+
 			var evo:SongEvent = new SongEvent(SongEvent.RESULT,XML(e.result));
 			this.dispatchEvent(evo);
 			

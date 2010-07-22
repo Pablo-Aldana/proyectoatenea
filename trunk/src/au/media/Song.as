@@ -41,7 +41,7 @@ package au.media
 			
 			if(_id) songID=_id;
 						
-				onResult(null);
+				//onResult(null);
 			
 			if(item){
 				songID=item.songID;
