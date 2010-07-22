@@ -41,8 +41,6 @@ package au.searchers
 			page=0;
 			again=true; 
 			key=_key;
-			processeds.removeAll();
-			processing.removeAll();
 			
 			if(key.length>0){
 				searching();	
@@ -77,7 +75,8 @@ package au.searchers
 						s=new Song();
 						
 						s.songID=db[i].split('" href="listen/')[1].split('/')[0];
-						s.title=db[i].split('"b1">')[1].split('</a>')[0];						
+						s.title=db[i].split('"b1">')[1].split('</a>')[0].split('-')[0];	
+						s.artist=db[i].split('"b1">')[1].split('</a>')[0].split('-')[1];						
 						s.server="goear";
 										
 						//s.addEventListener(SongEvent.COMPLETE,addResult);

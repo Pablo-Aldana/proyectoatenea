@@ -43,8 +43,6 @@ package au.searchers
 			page=0;
 			again=true; 
 			key=_key;
-			processeds.removeAll();
-			processing.removeAll();
 			
 			if(key.length>0){
 				searching();	

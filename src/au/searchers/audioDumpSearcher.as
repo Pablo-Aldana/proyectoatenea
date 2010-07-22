@@ -36,7 +36,6 @@ package au.searchers
 		public function search(_key:String):void
 		{
 			key=_key;
-			processeds.removeAll();
 			
 			if(key.length>0){
 				searching();	
