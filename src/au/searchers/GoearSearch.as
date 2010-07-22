@@ -14,19 +14,24 @@ package au.searchers
 	public class GoearSearch extends UIComponent
 	{
 		private var key:String;
+		private var query:String;
 		private var request:HTTPService;
 		private var processing:ArrayCollection;
 		private var processeds:ArrayCollection;
 		private var again:Boolean;
 		private var page:Number;
 		
-		public function GoearSearch(_processeds:ArrayCollection)
+		public function GoearSearch(_processeds:ArrayCollection,user:String)
 		{
 			super();	
 			request= new HTTPService();
 			request.resultFormat = "text";
 			request.addEventListener(ResultEvent.RESULT,onResult);
 			request.addEventListener(FaultEvent.FAULT,onError);
+			URLRequestDefaults.userAgent=user;
+			query="http://www.goear.com/search.php?q=";
+			request.headers["Referer"]="http://www.goear.com/index.php";
+			request.headers["Host"]="www.goear.com";
 			processing= new ArrayCollection();
 			processeds=_processeds;
 		}
@@ -51,9 +56,8 @@ package au.searchers
 
 			var pat:RegExp = / /; 
 		    URLRequestDefaults.userAgent="Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.2; Tablet PC 2.0)";
-			request.url='http://www.goear.com/search.php?q='+key+'&p='+page;
-			request.headers["Referer"]='http://www.goear.com/search.php?q='+key+'&p='+page;
-		    request.headers["Host"]="www.goear.com";
+			request.url=query+key;
+			//request.url='http://www.goear.com/search.php?q='+key+'&p='+page;
 			request.url=request.url.replace(pat, "+");
 			request.send();
 		}
@@ -61,7 +65,6 @@ package au.searchers
 		private function onResult(event:ResultEvent):void
 		{
 			var s:Song;
-			var ide:String;
 			var link:String;
 			var resultados:String=event.result.toString();
 						
@@ -71,20 +74,23 @@ package au.searchers
 				for(var i:Number=0;i<db.length;i++){
 					if(db[i].indexOf('" href="listen/') != 0){
 						
-						ide=db[i].split('" href="listen/')[1].split('"')[0];
-												
-						s=new Song(ide);
-						s.addEventListener(SongEvent.COMPLETE,addResult);
-						processing.addItem(s);
+						s=new Song();
+						
+						s.songID=db[i].split('" href="listen/')[1].split('/')[0];
+						s.title=db[i].split('"b1">')[1].split('</a>')[0];						
+						s.server="goear";
+										
+						//s.addEventListener(SongEvent.COMPLETE,addResult);
+						processeds.addItem(s);
 					}
 				}
 				
-				if(db.length>5){
+				/*if(db.length>5){
 					page++;
 					searching();
 				}else{
 					stop();
-				}
+				}*/stop();
 			}
 			
 		}

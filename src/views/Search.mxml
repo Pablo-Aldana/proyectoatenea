@@ -4,19 +4,16 @@
 	<mx:Script>
 		<![CDATA[
 			import au.media.SongEvent;
-			import au.searchers.DilandauSearch;
-			import au.searchers.GoearDetails;
-			import au.searchers.GoearSearch;
-			import au.searchers.GoogleSearch;
-			import au.searchers.ListenGoSearch;
-			import au.searchers.SearchEvent;
-			import au.searchers.audioDumpSearcher;
-			import au.searchers.vkSearch;
-			
+			import au.searchers.*;
+
 			import mx.collections.ArrayCollection;
 			
+			//public var s:Buscon;
 			public var audioDump:audioDumpSearcher;
+			public var emp3world:eMp3WorldSearcher;
+			public var goear:GoearSearch;
 			public var dilandau:DilandauSearch;
+			
 			private var userAgent:String;
 			
 			[Bindable] public var processed:ArrayCollection;
@@ -27,6 +24,8 @@
 				userAgent="Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.2; Tablet PC 2.0)";
 				
 				audioDump = new audioDumpSearcher(processed,userAgent);
+				emp3world = new eMp3WorldSearcher(processed,userAgent);
+				goear = new GoearSearch(processed,userAgent);
 				dilandau =  new DilandauSearch(processed);
 				
 				audioDump.addEventListener(SearchEvent.START,onStart);
@@ -48,14 +47,18 @@
 			
 			public function onSearch(text:String):void
 			{
-				audioDump.search(text)
-				//dilandau.search(text)
+				goear.search(text);
+				//audioDump.search(text);
+				emp3world.search(text);
+				//dilandau.search(text);
 			}
 			
 			public function stopSearch():void
 			{
-				audioDump.stop()
-				dilandau.stop()
+				audioDump.stop();
+				emp3world.stop();
+				goear.stop();
+				dilandau.stop();
 			}		
 			
 			public function download () : void
@@ -80,7 +83,8 @@
     	id="lista" top="27" bottom="10.100006" right="10" left="10">
     	<mx:columns>
     		<mx:DataGridColumn dataField="title" headerText="Titulo"/>
-    		<mx:DataGridColumn dataField="artist" headerText="Artista"/>
+			<mx:DataGridColumn dataField="artist" headerText="Artista"/>
+			<mx:DataGridColumn dataField="server" headerText="Servidor"/>
     	</mx:columns>	        	
     </mx:DataGrid>	
     <mx:Button label="Descargar" enabled="{lista.selectedIndex>=0}" click="download()" left="131" height="25" top="0" fontWeight="normal"/>

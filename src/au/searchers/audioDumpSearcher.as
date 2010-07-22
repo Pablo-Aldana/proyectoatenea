@@ -16,11 +16,8 @@ package au.searchers
 	{
 		private var key:String;
 		private var query:String;
-		private var page:Number;
 		private var request:HTTPService;
-		private var processing:ArrayCollection;
 		private var processeds:ArrayCollection;
-		private var again:Boolean;
 		
 		public function audioDumpSearcher(_processeds:ArrayCollection,user:String)
 		{
@@ -33,17 +30,13 @@ package au.searchers
 			query="http://www.audiodump.com/search.php?q=";
 			request.headers["Referer"]="http://www.audiodump.com/index.php";
 			request.headers["Host"]="www.audiodump.com";
-			processing= new ArrayCollection();
 			processeds=_processeds;
 		}
 		
 		public function search(_key:String):void
 		{
-			page=0;
-			again=true; 
 			key=_key;
 			processeds.removeAll();
-			processing.removeAll();
 			
 			if(key.length>0){
 				searching();	
@@ -56,7 +49,7 @@ package au.searchers
 		{
 
 			var pat:RegExp = / /; 
-		  	request.url=query+key;
+		  	request.url=query+key+"&x=0&y=0";
 			request.url=request.url.replace(pat, "+");
 			request.send();
 		}
@@ -82,6 +75,8 @@ package au.searchers
 						s.title=db[i].split('">')[1].split('-')[1].split('</a>')[0];
 						s.artist=db[i].split('">')[1].split('-')[0];
 						s.server="audiodump";
+						s.referer=query+key+"&x=0&y=0";
+						s.host="www.audiodump.com";
 					}catch(e:Error){}
 					
 
