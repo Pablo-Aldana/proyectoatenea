@@ -81,7 +81,7 @@ package au.media
 				
 		private function onResult(e:SongEvent):void
 		{
-			var evo:SongEvent= new SongEvent(SongEvent.COMPLETE);
+			var evo:SongEvent= new SongEvent(SongEvent.DETAILS);
 			
 			if(server=="goear")
 			{
@@ -89,14 +89,11 @@ package au.media
 				if (_path=="http://www.goear.com/files/sst5/mp3files/27042010/70cbb9136abe52c4cd6e4449a24a65bd.mp3")
 				{
 					trace("mala"+songID);
-					intervalId = setInterval(details, 4000);
+					intervalId = setInterval(details, 2000);
 				}else
 				{
 					artist=String(e.result.song[0].@artist);
 					title=String(e.result.song[0].@title);
-				}
-				if(title){
-					//image.search(title+" "+artist);
 					this.dispatchEvent(evo);
 				}
 			}else if(server=="mp3000"){
