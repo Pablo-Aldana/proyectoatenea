@@ -3,6 +3,7 @@ package au.media
 	import au.searchers.GoearDetails;
 	import au.searchers.GoogleImages;
 	import au.searchers.ListenGoSearch;
+	import au.searchers.mp3000Details;
 	import au.utils.DBManager;
 	
 	import flash.utils.*;
@@ -21,6 +22,7 @@ package au.media
 		[Bindable] public var host:String;
 		[Bindable] public var referer:String;
 		[Bindable] public var server:String;
+		[Bindable] public var detailslink:String;
 		
 		[Bindable] public var position:Number;
 		[Bindable] public var length:Number;
@@ -32,6 +34,7 @@ package au.media
 		[Bindable] public var image:GoogleImages;
 		
 		private var dbmanager:DBManager;
+		
 		
 		public function Song(_id:String=null, item:Object=null)
 		{
@@ -96,6 +99,10 @@ package au.media
 					//image.search(title+" "+artist);
 					this.dispatchEvent(evo);
 				}
+			}else if(server=="mp3000"){
+				_path=e.result.link;
+				referer=e.result.referer;
+			
 			}
 			
 		}
@@ -120,6 +127,14 @@ package au.media
 				details.addEventListener(SongEvent.RESULT,onResult);
 				details.send();
 				clearInterval(intervalId);
+			}else if (server=="mp3000")
+			{
+				
+				var detailsmp3000:mp3000Details;
+				detailsmp3000 = new mp3000Details(songID,detailslink,referer);
+				detailsmp3000.addEventListener(SongEvent.RESULT,onResult);
+				detailsmp3000.send();
+				
 			}
 		}
 		
