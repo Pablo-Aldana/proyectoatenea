@@ -11,6 +11,7 @@ package au.searchers
 	import mx.rpc.events.ResultEvent;
 	import mx.rpc.http.HTTPService;
 
+
 	public class GoearSearch extends UIComponent
 	{
 		private var key:String;
@@ -20,6 +21,7 @@ package au.searchers
 		private var processeds:ArrayCollection;
 		private var again:Boolean;
 		private var page:Number;
+		private var intervalId:uint;
 		
 		public function GoearSearch(_processeds:ArrayCollection,user:String)
 		{
@@ -30,6 +32,7 @@ package au.searchers
 			request.addEventListener(FaultEvent.FAULT,onError);
 			URLRequestDefaults.userAgent=user;
 			query="http://www.goear.com/search.php?q=";
+		
 			request.headers["Referer"]="http://www.goear.com/index.php";
 			request.headers["Host"]="www.goear.com";
 			processing= new ArrayCollection();
@@ -78,7 +81,8 @@ package au.searchers
 						s.title=db[i].split('"b1">')[1].split('</a>')[0].split('-')[0];	
 						s.artist=db[i].split('"b1">')[1].split('</a>')[0].split('-')[1];						
 						s.server="goear";
-										
+					
+
 						//s.addEventListener(SongEvent.COMPLETE,addResult);
 						processeds.addItem(s);
 					}
@@ -93,7 +97,7 @@ package au.searchers
 			}
 			
 		}
-		
+				
 		private function addResult(e:SongEvent):void
 		{
 			processeds.addItem(e.target);
