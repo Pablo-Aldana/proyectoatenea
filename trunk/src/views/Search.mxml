@@ -8,15 +8,10 @@
 			
 			import mx.collections.ArrayCollection;
 		
-			/**borrar*/
 			public var buscon:SearchManager;
-			public var audioDump:audioDumpSearcher;
-			public var emp3world:eMp3WorldSearcher;
-			public var goear:GoearSearch;
-			public var dilandau:DilandauSearch;
 			
 			private var userAgent:String;
-			/**/
+
 			[Bindable] public var results:ArrayCollection;
 			
 			public function init():void

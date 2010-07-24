@@ -5,16 +5,18 @@ package au.media
 	import au.searchers.ListenGoSearch;
 	import au.utils.DBManager;
 	
+	import flash.utils.*;
+	
 	import mx.core.UIComponent;
 
 	public class Song extends UIComponent
 	{
 		public var songID:String;
-		private var details:GoearDetails;
+		private var intervalId:uint;
 		
 		[Bindable] public var artist:String;
 		[Bindable] public var title:String;
-		[Bindable] public var path:String;
+		[Bindable] public var _path:String;
 		[Bindable] public var localPath:String;
 		[Bindable] public var host:String;
 		[Bindable] public var referer:String;
@@ -45,7 +47,7 @@ package au.media
 			
 			if(item){
 				songID=item.songID;
-				path=item.path;
+				_path=item.path;
 				localPath=item.localPath;
 				title=item.title;
 				artist=item.artist;
@@ -58,18 +60,44 @@ package au.media
 			position=0;
 			length=0;
 		}
+		
+		public function get path():String
+		{
+			if (!_path)
+			{
+				details();
+			}
+			
+				return _path;
+		}
+		
+		public function set path(p:String):void
+		{
+			_path=p;
+		}
 				
 		private function onResult(e:SongEvent):void
 		{
 			var evo:SongEvent= new SongEvent(SongEvent.COMPLETE);
 			
-			//path=String(e.result.song[0].@path);
-			//artist=String(e.result.song[0].@artist);
-			//title=String(e.result.song[0].@title);
-			if(title){
-				//image.search(title+" "+artist);
-				this.dispatchEvent(evo);
+			if(server=="goear")
+			{
+				_path=String(e.result.song[0].@path);
+				if (_path=="http://www.goear.com/files/sst5/mp3files/27042010/70cbb9136abe52c4cd6e4449a24a65bd.mp3")
+				{
+					trace("mala"+songID);
+					intervalId = setInterval(details, 4000);
+				}else
+				{
+					artist=String(e.result.song[0].@artist);
+					title=String(e.result.song[0].@title);
+				}
+				if(title){
+					//image.search(title+" "+artist);
+					this.dispatchEvent(evo);
+				}
 			}
+			
 		}
 		
 		public function addToDB():void
@@ -80,6 +108,19 @@ package au.media
 			
 			var evo:SongEvent=new SongEvent(SongEvent.INSERT_SONG, songID);
 			this.dispatchEvent(evo);
+		}
+		
+		public function details():void
+		{
+			if (server=="goear")
+			{
+				trace("detalleando"+songID);
+				var details:GoearDetails;
+				details = new GoearDetails(songID,referer);
+				details.addEventListener(SongEvent.RESULT,onResult);
+				details.send();
+				clearInterval(intervalId);
+			}
 		}
 		
 	}

@@ -21,10 +21,10 @@ package au.searchers
 			
 			searchers=new Array();
 			
-			searchers.push( new eMp3WorldSearcher(results,userAgent) );
 			searchers.push( new GoearSearch(results,userAgent) );
+			/*searchers.push( new eMp3WorldSearcher(results,userAgent) );
 			searchers.push( new audioDumpSearcher(results,userAgent) );
-			
+			*/
 			length=searchers.length;
 			
 			for(var i:Number=0;i<length;i++)
