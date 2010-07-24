@@ -57,7 +57,9 @@ package au.searchers
 
 			var pat:RegExp = / /; 
 		    URLRequestDefaults.userAgent="Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.2; Tablet PC 2.0)";
-			request.url=query+key;
+			request.url=query+key+'&p='+page;
+			if(page!=0)
+				request.url+='&p='+page;
 			//request.url='http://www.goear.com/search.php?q='+key+'&p='+page;
 			request.url=request.url.replace(pat, "+");
 			request.send();
@@ -80,20 +82,18 @@ package au.searchers
 						s.songID=db[i].split('" href="listen/')[1].split('/')[0];
 						s.title=db[i].split('"b1">')[1].split('</a>')[0].split('-')[0];	
 						s.artist=db[i].split('"b1">')[1].split('</a>')[0].split('-')[1];						
-						s.server="goear";
-					
+						s.server="goear";					
 
-						//s.addEventListener(SongEvent.COMPLETE,addResult);
 						processeds.addItem(s);
 					}
 				}
-				
-				/*if(db.length>5){
+				//*
+				if(db.length>5){
 					page++;
 					searching();
 				}else{
 					stop();
-				}*/stop();
+				}//*/stop();
 			}
 			
 		}
