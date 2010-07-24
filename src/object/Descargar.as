@@ -1,5 +1,8 @@
 package object
 {
+	import au.media.Song;
+	import au.media.SongEvent;
+	
 	import flash.events.Event;
 	import flash.events.ProgressEvent;
 	import flash.events.TimerEvent;
@@ -17,7 +20,7 @@ package object
 	public class Descargar extends UIComponent
 	{
 		
-		public var item:Object;
+		public var item:Song;
 		public var nombre:String;
 		[Bindable] public var porcentaje:String;
 		[Bindable] public var restante:String;
@@ -34,46 +37,63 @@ package object
 		private var directorio:File;
 		private var minuteTimer:Timer;
 		
-		public function Descargar(_item:Object,_directorio:File):void
+		public function Descargar(_item:Song,_directorio:File):void
 		{
 			item=_item;
 			directorio=_directorio;
-			item.path=item.path.replace('"', '');
-			link= new URLRequest(item.path);
 			tiempoi=new Date();
 			tiempoc=new Date();
 			item.progress=0;
 			bytesLoaded=0;
 			bytesTotal=0;
 			bytesSaves=0;
-			nombre=item.artist+" - "+item.title;
 			porcentaje="0 %";
 			urlStream = new URLStream(); 
 			urlStream.addEventListener(ProgressEvent.PROGRESS, progresar);
 			urlStream.addEventListener(Event.COMPLETE, finalizar);
-			descarga();
 			
 			minuteTimer = new Timer(1000, 0);
             
             // designates listeners for the interval and completion events
             minuteTimer.addEventListener(TimerEvent.TIMER, compara);
 	        minuteTimer.start();
+			
+			restante="Iniciando..."
+			
+			//pedimos detalles
+			_item.addEventListener(SongEvent.DETAILS,onPath);
+			if(item.path){
+				item.path=item.path.replace('"', '');
+				link= new URLRequest(item.path);
+				descarga();
+			}
+				
             
+		}
+		
+		private function onPath(e:SongEvent):void
+		{
+				item.path=item.path.replace('"', '');
+				link= new URLRequest(item.path);
+				descarga();
 		}
 				
 		public function descarga():void
 		{
-			restante="Iniciando..."
 			
+			if (!link)
+				return;
+			
+			nombre=item.artist+" - "+item.title;
+				
 			var header:URLRequestHeader = new URLRequestHeader("Referer",item.referer);
 			link.requestHeaders.push(header);
 			link.userAgent="Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.2; Tablet PC 2.0)";
 		   
-			
-			try{
-				urlStream.load(link);
-			}catch(e:Error){};
-			
+				try{
+					urlStream.load(link);
+				}catch(e:Error){};
+				
 		}
 		
 		public function pausa(but:Button):void

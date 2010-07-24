@@ -2,6 +2,7 @@ package au.singleton
 {
 	import au.media.Playlist;
 	import au.media.Song;
+	import au.media.SongEvent;
 	
 	import flash.events.Event;
 	import flash.events.ProgressEvent;
@@ -44,25 +45,37 @@ package au.singleton
 			playlist=_playlist;
 		}
 		
+		private function onPath(e:SongEvent):void
+		{
+			if (e.target==song)
+				this.play(song);
+		}
+		
 		public function play(_song:Song,continuos:Boolean=false):void
 		{
 
 		    if (playing) channel.stop();
 		    
-		    loading=true;
-		    playing=true;
 		    song=_song;
 		    playlist.current=song;
 
 			if(!continuos)
 		    	song.position = 0;
 		    
+			
+			if(song.path)
+			{
 			    request = new URLRequest(song.path); //para listas
-			    trace(song.path);
+				playing=true;	
+				loading=true;		  
 				var header:URLRequestHeader = new URLRequestHeader("Referer",song.referer);
 				request.requestHeaders.push(header);
 			    request.userAgent="Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.2; Tablet PC 2.0)";
-		    
+			}else{
+				song.addEventListener(SongEvent.DETAILS,onPath);
+				return;
+			}
+				
 		    if(soundFactory)
 
 		    	if(loading)
@@ -79,11 +92,11 @@ package au.singleton
 			    	soundTR = new SoundTransform();
 					soundTR.volume = volume;
 			    	channel.soundTransform=soundTR;
+					channel.addEventListener(Event.SOUND_COMPLETE, soundCompleteHandler);
 		    	    
 			    }catch(e:Error){
 			    	trace("no carga sonido");
 		    };
-		    channel.addEventListener(Event.SOUND_COMPLETE, soundCompleteHandler);
 	        
 	        soundFactory.addEventListener(Event.COMPLETE, function f(e:Event):void{loading=false;});
 	     	soundFactory.addEventListener(ProgressEvent.PROGRESS, function f(e:ProgressEvent):void{
@@ -101,12 +114,10 @@ package au.singleton
 	   			var pMinutes:Number;
 	   			var pSeconds:Number;
 	   
-	        	song.length = Math.round(soundFactory.length / (soundFactory.bytesLoaded / soundFactory.bytesTotal));
-	   		 	//song.position = Math.round(1000 * (channel.position / song.length))/10;
-	    		song.position = Math.round(channel.position);
-	   
-				//bprogreso.setProgress(playbackPercent, 100); 
 				if(channel!=null){
+					song.length = Math.round(soundFactory.length / (soundFactory.bytesLoaded / soundFactory.bytesTotal));
+					//song.position = Math.round(1000 * (channel.position / song.length))/10;
+					song.position = Math.round(channel.position);
 			  		pMinutes = Math.floor(song.position / 1000 / 60);
 	          		pSeconds = Math.floor(song.position / 1000) % 60;
 	          		song.time = pMinutes+":"+(pSeconds < 10?"0"+pSeconds:pSeconds);

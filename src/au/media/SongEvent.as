@@ -6,6 +6,7 @@ package au.media
 	{
 		public static const RESULT:String = "result";
 		public static const COMPLETE:String = "complete";
+		public static const DETAILS:String = "details";
 		public static const DOWNLOAD:String = "download";
 		public static const PLAY:String = "play";
 		public static const TOLIST:String = "addToList";
