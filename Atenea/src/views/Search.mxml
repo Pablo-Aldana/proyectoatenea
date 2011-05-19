@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" creationComplete="init()" xmlns:s="library://ns.adobe.com/flex/spark">
+
+	<mx:Script>
+		<![CDATA[
+			import au.media.SongEvent;
+			import au.searchers.*;
+			
+			import mx.collections.ArrayCollection;
+		
+			public var buscon:SearchManager;
+			
+			private var userAgent:String;
+
+			[Bindable] public var results:ArrayCollection;
+			
+			public function init():void
+			{
+				results = new ArrayCollection();
+				buscon = new SearchManager(results);
+				
+				buscon.addEventListener(SearchEvent.STOP,onStop);
+				buscon.addEventListener(SearchEvent.START,onStart);
+			}
+			
+			public function onStart(e:SearchEvent):void
+			{
+				e= new SearchEvent(SearchEvent.START);
+				dispatchEvent(e);
+			}
+			public function onStop(e:SearchEvent):void
+			{
+				e= new SearchEvent(SearchEvent.STOP);
+				dispatchEvent(e);
+			}		
+			
+			public function onSearch(text:String):void
+			{
+				buscon.search(text);
+		
+			}
+			
+			public function stopSearch():void
+			{
+				buscon.stop();
+				
+			}		
+			
+			public function download () : void
+			{
+				this.dispatchEvent(new SongEvent(SongEvent.DOWNLOAD,lista.selectedItem));
+			}
+			
+			public function onDoubleClick () : void 
+			{
+				if(lista.selectedItem!=null)
+					this.dispatchEvent(new SongEvent(SongEvent.PLAY,lista.selectedItem));
+			}
+			
+			public function addToList () : void 
+			{
+				this.dispatchEvent(new SongEvent(SongEvent.TOLIST,lista.selectedItem));
+			}
+		]]>
+	</mx:Script>
+	<s:VGroup top="5" left="5" right="5" bottom="5" gap="4">
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Button label="Descargar" enabled="{lista.selectedIndex>=0}" click="download()" fontWeight="normal"/>
+			<s:Button label="Añadir a lista" enabled="{lista.selectedIndex>=0}" click="addToList()" fontWeight="normal"/>
+			<mx:Spacer width="100%" />
+			<s:Label text="{'Resultados: '+results.length}" textAlign="right"/>
+		</s:HGroup>
+		
+		<mx:DataGrid doubleClickEnabled="true" dataProvider="{results}" doubleClick="onDoubleClick()" 
+					 id="lista" width="100%" height="100%">
+			<mx:columns>
+				<mx:DataGridColumn dataField="title" headerText="Titulo"/>
+				<mx:DataGridColumn dataField="artist" headerText="Artista"/>
+				<mx:DataGridColumn dataField="server" headerText="Servidor"/>
+			</mx:columns>	        	
+		</mx:DataGrid>	
+	</s:VGroup>
+    
+</mx:Canvas>

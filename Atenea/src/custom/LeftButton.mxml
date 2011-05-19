@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" creationComplete="group1_creationCompleteHandler(event)">
+	
+		<s:states>
+			<s:State name="State1"/>
+			<s:State name="selected"/>
+		</s:states>
+	
+	
+		<s:transitions> 
+			<mx:Transition id="transMenu" fromState="State1" toState="selected"> 
+				<s:Parallel target="{backImage}">
+					<s:Fade alphaFrom="0" alphaTo="1" duration="300"/>
+				</s:Parallel>
+			</mx:Transition> 
+		</s:transitions>
+	
+		<fx:Declarations>
+		</fx:Declarations>
+		<fx:Script>
+			<![CDATA[
+				import mx.events.FlexEvent;
+				[Bindable]public var icono:String;
+				[Bindable]public var label:String;
+				private var _selected:Boolean;
+	
+				protected function group1_creationCompleteHandler(event:FlexEvent):void
+				{
+					_selected=false;
+					image.load("assets/skins/custom/"+this.icono+"_2.png");
+				}
+				
+				public function set selected(val:Boolean):void
+				{
+					_selected=val;
+					(this._selected)?this.currentState="selected":this.currentState="State1";
+				}
+				
+				
+	
+			]]>
+		</fx:Script>
+	
+	<mx:Image id="backImage" includeIn="selected" left="0" right="0" bottom="2" top="2" source="assets/skins/custom/back_button.png"/>
+	<s:Label text="{this.label}" left="38" id="boton" fontSize="12" right="10" verticalCenter="0"/>
+	<mx:Image left="10" id="image" verticalCenter="0"/>
+
+</s:Group>

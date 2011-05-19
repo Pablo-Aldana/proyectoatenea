@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml"
+	layout="vertical"
+	 width="100%" height="100%"
+	title="{'Actualizacion Encontrada! version: '+Actualicer.instance.newVersion}"
+	showCloseButton="true" close="PopUpManager.removePopUp(this);"
+	creationComplete="inicio();" horizontalAlign="center">
+
+	<mx:Script>
+		<![CDATA[
+			import au.singleton.Actualicer;
+			import mx.managers.PopUpManager;
+	
+			private function inicio():void {
+                // Center the TitleWindow container
+                PopUpManager.centerPopUp(this); 
+            }
+            
+			private function actualizar():void{
+				
+				Actualicer.instance.update();
+				texto.text="Actualizando, Espera...";
+				//PopUpManager.removePopUp(this);
+			}
+			
+			public function getURL(url:String,metodo:String="_blank"):void {
+			    var request:URLRequest = new URLRequest(url);
+			    try {            
+			        navigateToURL(request,metodo);
+			    }
+			    catch (e:Error) {
+			        // handle error here
+				}
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:TextArea id="texto" width="400" height="200" borderStyle="none"
+		 selectable="false" editable="false" htmlText="{Actualicer.instance.features}"/>
+
+	<mx:Button label="Actualizar!" id="okButton" 
+		click="{actualizar()}"/>
+
+	
+</mx:TitleWindow>

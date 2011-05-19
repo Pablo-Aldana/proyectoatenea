@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" creationComplete="init()" xmlns:s="library://ns.adobe.com/flex/spark" styleName="playerCanvas">
+    
+    <mx:Script>
+    	<![CDATA[
+    		import mx.formatters.DateFormatter;
+    		import au.singleton.Player;
+    		[Bindable] public var player:Player
+    		
+    		public function init():void
+    		{
+    			player=Player.instance;
+    		}
+    		
+    		
+			public function formatearSlider(val:Number):String 
+			{
+				var df:DateFormatter = new DateFormatter();
+				df.formatString = "NN:SS";
+				var t:Date=new Date(val);
+				return df.format(t);
+			}
+					
+			public function goToTime():void
+			{
+				player.playing=true;
+				//pauseButton.visible=true;
+				player.goTo(slider.value);			
+			};
+			
+			
+    	]]>
+    </mx:Script>
+  
+	<mx:ViewStack id="vs" selectedIndex="{Number(Boolean(player.song))}" width="100%" verticalCenter="0" horizontalCenter="0">
+		<s:NavigatorContent id="logo_content">
+			<mx:Image top="5" bottom="5" source="assets/48_bw.png" horizontalCenter="0" />
+		</s:NavigatorContent>
+		
+		<s:NavigatorContent id="data_content">
+			<s:HGroup top="5" bottom="5" left="5" right="5" verticalAlign="middle" horizontalAlign="center">
+				<s:Group>
+					<mx:Image id="image" source="{player.song.image.path}" left="10" top="10" bottom="10" right="10"/>
+				</s:Group>
+				<s:VGroup width="100%" horizontalAlign="center" gap="2">
+					<s:Label id="titulo" text="{player.song.title}" fontSize="13" fontWeight="bold"/>  
+					<s:Label id="artista" text="{player.song.artist}" fontSize="13"/> 
+					<s:Group>
+						<mx:ProgressBar labelPlacement="right" labelWidth="0" id="bcarga" mode="polled" source="{player.song}" label="" 
+										height="2" width="100%" top="12" left="4"/>
+						<mx:HSlider minimum="0" id="slider" height="12" width="100%"
+									allowTrackClick="true" enabled="{Boolean(player.song)}"
+									liveDragging="true" showTrackHighlight="true" right="4"
+									dataTipFormatFunction="formatearSlider" maximum="{player.song.length}" value="{player.song.position}"
+									change="goToTime();"/>
+					</s:Group>
+				</s:VGroup>
+			</s:HGroup>
+			<s:Label text="{player.song.time+' / '+player.song.totalTime}" fontSize="13" textAlign="right" right="5" bottom="5"/>
+		</s:NavigatorContent>
+	</mx:ViewStack>
+		
+	         
+</mx:Canvas>

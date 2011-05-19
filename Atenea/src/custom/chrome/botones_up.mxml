@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml"
+	horizontalGap="0" verticalAlign="middle"
+	paddingRight="8"
+	horizontalScrollPolicy="off" verticalScrollPolicy="off" >
+	
+	<mx:Script>
+		<![CDATA[
+			public function maximizar():void{
+				trace(stage.nativeWindow.displayState);
+				if(stage.nativeWindow.displayState=="maximized"){
+					max.styleName="MaxBtn";
+					max.toolTip="Maximizar";
+					stage.nativeWindow.restore();
+				}else{
+					max.styleName="ResBtn";
+					max.toolTip="Restaurar";
+					stage.nativeWindow.maximize();
+				}
+			}
+		]]>
+	</mx:Script>
+
+	<mx:Button height="14" width="14" styleName="MinBtn" click="stage.nativeWindow.minimize();event.stopPropagation();" tabEnabled="false" toolTip="Minimizar" mouseEnabled="true" />
+	
+	<mx:Button id="max" height="14" width="14" styleName="MaxBtn" click="maximizar();event.stopPropagation();" tabEnabled="false" toolTip="Maximizar" mouseEnabled="true" />
+			 
+	<mx:Button height="14" width="14" styleName="CloBtn" click="NativeApplication.nativeApplication.exit();event.stopPropagation();" tabEnabled="false" toolTip="Cerrar" mouseEnabled="true" />
+	
+</mx:HBox>

@@ -1,0 +1,191 @@
+/* CSS file */
+@namespace mx "http://www.adobe.com/2006/mxml";
+@namespace fx "http://www.adobe.com/mxml/2009";
+@namespace chrome "custom.chrome.*";
+@namespace c "custom.*";
+@namespace "library://ns.adobe.com/flex/halo";
+@namespace s "library://ns.adobe.com/flex/spark";
+
+s|WindowedApplication{
+	skinClass:ClassReference("spark.skins.spark.SparkChromeWindowedApplicationSkin");	
+}
+
+s|global
+{
+	content-background-color: #987171;
+	font-size:11;
+	font-family: Myriad;
+}
+
+c|LeftButton{
+	font-family: Myriad;
+}
+		
+.borde {
+	backgroundSize: "100%";
+	backgroundImage: Embed(source="assets/skins/custom/chrome/border.png");
+}
+
+.descargaBar{
+	bar-color:green;
+}
+
+.chromeborde {
+	backgroundSize: "100%";
+	backgroundImage: Embed(source="assets/skins/custom/chrome/chrome_border.png");
+}	
+		   
+.myTabs {
+	cornerRadius:10;
+	highlightAlphas: 1, 0.22;
+	fillAlphas: 1, 0.53;
+	fillColors: #ffffff, #ffffff;
+	backgroundColor: #ffffff;
+	borderColor: #cccccc;
+	color: #000033;
+	textRollOverColor: #000033;
+	themeColor: #0099ff;
+	textAlign: center;
+	fontSize: 10;
+}
+
+mx|Alert{
+	textFieldClass: ClassReference("mx.core.UIFTETextField");
+	font-family:Arial;
+}
+
+mx|TextInput{
+	font-family:Arial;
+}
+
+mx|TextArea{
+	font-family:Arial;
+}
+
+mx|Button{
+	textFieldClass: ClassReference("mx.core.UIFTETextField");
+}
+			
+mx|DataGrid {
+	font-family: Arial;
+	content-background-alpha:.6;
+	content-background-color: #ffffff;
+	verticalGridLines: false;
+	useRollOver: true;
+	rollOverColor: #cccccc;
+	textRollOverColor: #003300;
+	selectionColor: #336699;
+	textSelectedColor: #ffffff;
+	drop-shadow-visible: true;
+}
+
+mx|List {
+	font-family: Arial;
+	content-background-color: #ffffff;
+	content-background-alpha:.6;
+}
+			
+mx|ToolTip {
+	textFieldClass: ClassReference("mx.core.UIFTETextField");
+	backgroundAlpha: 0.8;
+	cornerRadius: 5;
+	backgroundColor: #000000;
+	fontSize:13;
+	font-weight:bold;
+	color: #FFFFFF;
+}
+
+.leftTab{
+	background-color: #c6c6c6;
+	fillAlphas: 1, 1;
+	fillColors: #8a8a8a, #c6c6c6;	
+}
+			
+mx|HSlider {
+   labelOffset: 0;
+   thumbOffset: 0;
+   tickLength: 0;
+   showTrackHighlight: true;
+   data-tip-style-name: globaltext;
+}
+
+.songHSlider {
+	labelOffset: 0;
+	thumbOffset: 5;
+	tickLength: 0;
+	showTrackHighlight: true;
+	data-tip-style-name: globaltext;
+}
+
+.globaltext{
+	font-family: Myriad;
+	color: #ffffff;
+}
+
+
+#border1{
+	backgroundSize: "100%";
+	verticalAlign: middle;
+	horizontalAlign: left;
+	horizontalGap: 5;
+	border-visible: false;
+	
+	background-image: Embed(source="assets/skins/custom/textinput_background.png");
+}
+
+.playerCanvas{
+	borderColor: #F4F4F4;
+	borderAlpha: 0;
+	cornerRadius: 3;
+	backgroundColor: #ffffff;
+}
+
+c|Play 
+{
+	upSkin: Embed("assets/skins/custom/controls/play.png");
+	overSkin: Embed("assets/skins/custom/controls/play_over.png");
+	downSkin: Embed("assets/skins/custom/controls/play_click.png");
+	disabledSkin: Embed("assets/skins/custom/controls/play_disabled.png");
+}
+
+c|REW 
+{
+	upSkin: Embed("assets/skins/custom/controls/rew.png");
+	overSkin: Embed("assets/skins/custom/controls/rew_over.png");
+	downSkin: Embed("assets/skins/custom/controls/rew_click.png");
+	disabledSkin: Embed("assets/skins/custom/controls/rew_disabled.png");
+}
+
+c|FFD 
+{
+	upSkin: Embed("assets/skins/custom/controls/ffd.png");
+	overSkin: Embed("assets/skins/custom/controls/ffd_over.png");
+	downSkin: Embed("assets/skins/custom/controls/ffd_click.png");
+	disabledSkin: Embed("assets/skins/custom/controls/ffd_disabled.png");
+}
+
+c|Pause 
+{
+	upSkin: Embed("assets/skins/custom/controls/pause.png");
+	overSkin: Embed("assets/skins/custom/controls/pause_over.png");
+	downSkin: Embed("assets/skins/custom/controls/pause_click.png");
+}
+
+/*
+//------------------------------
+//  Font
+//------------------------------
+*/
+
+@font-face {
+src: url("../assets/fonts/MyriadPro-Regular.otf");
+font-family: "Myriad";
+font-weight:normal;
+embed-as-cff:false;
+}
+@font-face {
+src: url("../assets/fonts/MyriadPro-Bold.otf");
+font-family: "Myriad";
+font-weight:bold;
+embed-as-cff:false;
+}

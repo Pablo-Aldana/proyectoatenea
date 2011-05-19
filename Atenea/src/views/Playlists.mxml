@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml">
+
+	<mx:Script>
+		<![CDATA[
+			import au.media.SongEvent;
+			import au.media.Song;
+			import mx.events.ListEvent;
+			import au.utils.DBManager;
+			import au.singleton.Player;
+			import au.media.Playlist;
+			import mx.collections.ArrayCollection;
+		
+			[Bindable] public var lists:ArrayCollection;
+			[Bindable] public var songs:ArrayCollection;
+			[Bindable] public var defaultList:Playlist;
+			private var player:Player;
+			private var dbmanager:DBManager;
+			private var dbSongs:DBManager;
+			private var dbRel:DBManager;
+			private var songID:String;
+			private var listID:Number;
+		
+			public function init():void
+			{
+				var s:Song;
+				dbmanager=new DBManager();
+				dbSongs=new DBManager();
+				dbRel=new DBManager();
+				
+				dbmanager.conectar();
+				dbSongs.conectar();
+				dbRel.conectar();
+				crearTablas();
+				
+				dbmanager.actualizar("Playlists");
+				dbSongs.actualizar("Songs");
+				
+				/**actualizar biblio*/
+				dbRel.actualizar("playlists_songs", "idPlaylist");
+				
+				lists=new ArrayCollection();
+				songs=dbSongs.datosDB;
+				songs.filterFunction=findSong;
+				
+				defaultList=new Playlist();
+				defaultList.name="Cola de Reproducción";
+				lists.addItem(defaultList);
+				player=Player.instance;
+				
+				var length:Number=dbmanager.datosDB.length;
+				for(var i:Number=0; i<length; i++){
+					dbmanager.datosDB[i]=new Playlist(dbmanager.datosDB[i]);
+				}
+				
+				lists.source = lists.source.concat(dbmanager.datosDB.source);
+			
+				lists.filterFunction=findList;
+				
+				var length2:Number=dbRel.datosDB.length;
+				var auxList:Playlist=new Playlist();
+				
+				songID="";
+				listID=0;
+				
+				for(var j:Number=0; j<length2; j++){
+					//RECUPERAR CANCION
+					songID=dbRel.datosDB[j].idSong;
+					listID=dbRel.datosDB[j].idPlaylist;
+					
+					songs.refresh();
+					lists.refresh();
+					
+					try{
+						s=new Song(null, songs[0]);
+						if(s.path.indexOf("goear") == -1)
+							lists[0].addItem(s); //esta es la linea fatidica :D
+					}catch(e:Error){};
+				}
+				
+				songID="";
+				listID=0;
+				lists.refresh();
+				/**asta aqui*/
+			}
+			
+			public function crearTablas():void
+			{
+				var consulta:String  = "CREATE TABLE IF NOT EXISTS Playlists(";
+				consulta+="id INTEGER PRIMARY KEY AUTOINCREMENT,";
+				consulta+="name TEXT"; 
+				consulta+=")";
+				dbmanager.hacerConsulta(consulta);
+				
+				var consulta2:String  = "CREATE TABLE IF NOT EXISTS Songs(";
+				consulta2+="songID TEXT PRIMARY KEY, artist TEXT, title TEXT, path TEXT, localPath TEXT"; 
+				consulta2+=")";
+				dbmanager.hacerConsulta(consulta2);
+				
+				var consulta3:String  = "CREATE TABLE IF NOT EXISTS playlists_songs (";
+				consulta3+="id INTEGER PRIMARY KEY AUTOINCREMENT,";
+				consulta3+="idPlaylist INTEGER, idSong TEXT"; 
+				consulta3+=")";
+				dbmanager.hacerConsulta(consulta3);
+			}
+			
+			private function findSong(item:Object):Boolean {
+				var ret:Boolean=true;
+				if(songID!="")
+             		 ret= (item.songID == songID);
+             	return ret;
+            }
+            
+            private function findList(item:Object):Boolean {
+            	var ret:Boolean=true;
+            	if(listID!=0)
+              		 ret= (item.id == listID);
+              	return ret;
+            }
+
+			public function delFromList() : void //CLASE listaReproduccion  
+			{
+					listas.selectedItem.delSong(repro.selectedItem);
+			}
+			
+			
+			
+			public function onDoubleClick(e:Event) : void //CLASE listaReproduccion
+			{
+				player.selectPlaylist(e.currentTarget.dataProvider);
+				player.play(e.target.data);
+			}
+			
+			public function onItemClick(e:ListEvent) : void //CLASE listaReproduccion
+			{
+				player.selectPlaylist(Playlist(e.itemRenderer.data));
+			}
+			
+			public function addList():void
+			{
+				defaultList=new Playlist(null, "Lista de reproducción "+lists.length);
+				lists.addItem(defaultList);
+			}
+			
+			public function removeList():void
+			{
+				listas.selectedItem.delList();
+				lists.removeItemAt(listas.selectedIndex);
+			}
+			
+			public function onItemEditEnd(e:Event):void
+			{
+				listas.editable=false;
+			}
+			
+			public function selectFirst(e:Event):void
+			{
+				comboLists.selectedIndex=1;
+			}
+			
+			public function download () : void
+			{
+				this.dispatchEvent(new SongEvent(SongEvent.DOWNLOAD,repro.selectedItem));
+			}
+		]]>
+	</mx:Script>
+
+	<mx:DataGrid dataProvider="{listas.selectedItem}" doubleClickEnabled="true" doubleClick="onDoubleClick(event)"
+		id="repro" bottom="10" right="10" left="248" top="27" dragEnabled="true">
+		<mx:columns>
+			<mx:DataGridColumn dataField="title" headerText="Titulo"/>
+			<mx:DataGridColumn dataField="artist" headerText="Artista"/>
+		</mx:columns>	        	
+	</mx:DataGrid>	  
+	<mx:Button label="Añadir a la lista" enabled="{repro.selectedIndex>=0 &amp;&amp; comboLists.selectedIndex>0}"
+		 click="comboLists.selectedItem.addSong(repro.selectedItem)" top="0" height="25" fontWeight="normal" left="248" width="128" />
+	<mx:Button label="Quitar de la lista" enabled="{repro.selectedIndex>=0}" visible="{listas.selectedIndex>0}"
+		 click="delFromList()" top="0" height="25" fontWeight="normal" right="10" width="115"/>
+	<mx:Button label="Descargar" enabled="{repro.selectedIndex>=0}" click="download()" 
+		height="25" top="0" fontWeight="normal" right="120"/>
+    
+	<mx:List id="listas" dataProvider="{lists}" labelField="name" left="10" top="27" width="230" bottom="40"
+		click="listas.editable=(listas.selectedIndex!=0)" change="listas.editable=false" itemClick="onItemClick(event)" 
+		creationComplete="listas.selectedIndex=0" /> <!--DRAG DROP SOLO CON DRAGMANAGER POR CODIGO.QUIZA EN RELEASE BUILD NO OCURRA-->
+	<mx:Button label="+" width="32.95" left="10" bottom="10" click="addList()"/>
+	<mx:Button label="-" enabled="{!(listas.selectedIndex==0 || listas.selectedItem==null)}" width="32.95" left="50.95" bottom="10" click="removeList()"/>
+	<mx:ComboBox id="comboLists" dataProvider="{lists}" creationComplete="selectFirst(event)" labelField="name" top="1" left="384"/>
+</mx:Canvas>
