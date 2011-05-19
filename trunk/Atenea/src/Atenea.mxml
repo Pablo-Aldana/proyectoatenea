@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					   xmlns:s="library://ns.adobe.com/flex/spark" 
+					   xmlns:mx="library://ns.adobe.com/flex/mx" 
+					   xmlns:c="custom.*"
+					   xmlns:chrome="custom.chrome.*"
+					   xmlns:custom="assets.skins.custom.*"
+					   xmlns:flash.filters="flash.filters.*"
+					   xmlns:views="views.*"
+					   backgroundColor="0x555555" showStatusBar="false" title="Atenea Beta" 
+					   creationComplete="init()" minHeight="500" minWidth="800">
+
+	<fx:Script source="as3/atenea.as"/>
+	<fx:Style source="css/atenea.css"/>
+	   		
+	  
+	  <chrome:chrome top="0" left="0" bottom="0" right="0" borderStyle="none" cornerRadius="0" borderColor="#FFFFFF" 
+					 contentBackgroundAlpha="0.18">
+	  	<mx:Box top="0" bottom="0" left="0" right="0" width="100%" height="100%" styleName="chromeborde" />
+	  	<chrome:sombra top="0" bottom="0" left="0" right="0" />
+	  	
+		  
+		<s:VGroup left="0" right="0" top="0" bottom="0" gap="0">
+			
+			<mx:ApplicationControlBar left="0" right="0" top="0" cornerRadius="0" borderAlpha="0.11" contentBackgroundAlpha="0.47" width="100%">
+				<s:HGroup width="100%" verticalAlign="middle">
+					<mx:ColorPicker id="colorSel" change="this.setStyle('backgroundColor', colorSel.selectedColor)"/>
+					<mx:Spacer width="160"/>
+					<views:SuperPlayer id="playero" width="100%" bottom="5" top="5" backgroundAlpha="0.73"/>
+					<s:VGroup width="162" horizontalAlign="center" verticalAlign="bottom" height="100%" gap="2">
+						<mx:ProgressBar id="loading" width="100%" indeterminate="true" visible="false" labelPlacement="center"/>
+						<s:BorderContainer id="border1" bottom="0" width="100%" height="18" contentBackgroundAlpha="0.3">
+							<chrome:buscar id="address" mouseDown="mouseD(event)" color="#000000" left="0" top="0" bottom="0" right="0"/>
+						</s:BorderContainer>
+					</s:VGroup>
+					
+				</s:HGroup>
+			</mx:ApplicationControlBar>
+			
+			<s:HGroup height="100%" width="100%" gap="0">
+				
+				<mx:Canvas id="leftMenu" width="170" dropShadowVisible="true" styleName="leftTab" height="100%">
+					<c:LeftButton id="find" label="Buscar" icono="search" left="0" right="0" height="30" y="16" selected="true" click="leftbutton1_clickHandler(event)"/>
+					<c:LeftButton id="play" label="Reproducir" icono="play" left="0" right="0" height="30" y="45" click="leftbutton1_clickHandler(event)"/>
+					<c:LeftButton id="download" label="Descargar" icono="down" left="0" right="0" height="30" y="74" click="leftbutton1_clickHandler(event)"/>
+					<c:LeftButton id="video" label="FLV Player" icono="video" left="0" right="0" height="30" y="103" click="leftbutton1_clickHandler(event)"/>
+					<c:LeftButton id="help" label="Ayuda" icono="help" left="0" right="0" height="30" y="132" click="leftbutton1_clickHandler(event)"/>
+					<mx:Image left="0" right="0" bottom="0" source="assets/skins/custom/sombra_left_tab_2.png"/>
+					<c:Controller id="controller"  bottom="10" left="0" right="0"/>
+				</mx:Canvas>
+				
+				<mx:ViewStack id="sections" change="sections_changeHandler(event)" backgroundAlpha="0.76" alpha="1.0" creationComplete="initTab()" width="100%" height="100%">
+					
+					<views:Search id="search" label="Buscar" width="95%" height="100%"/>
+					
+					<views:Playlists id="playlist" label="Reproducción" width="95%" height="100%"/> 
+					
+					<views:Downloads id="downloads" label="Descargas" directory="{directory}" width="95%" height="100%"/>
+					
+					<mx:Canvas label="FLV Player" enabled="false" width="95%" height="100%">   	 		
+						<c:megaplayer left="10" top="50" bottom="10" right="10" id="player" vcode="{link.text}"/>
+						<mx:TextInput left="10" top="15" width="211" id="link"/>
+						<s:Label text="{player.tiempoTotal}  %  Cargado Streaming: {player.bLoaded} mb TotalStreaming: {player.bTotales} mb Total Real: {player.tamanoReal} Tiempo total: {player.tiempoTReal}  Tiempo de la pista FLV: {player.tiempoTStreaming}" y="-1" x="8"/>
+						<mx:Button label="Play!" left="229" top="15" click="player.reproducir(link.text, '')"/>
+						<mx:Button label="Full Screen" left="292" top="15" click="player.goFull()"/>
+						<mx:TextInput x="385" y="15" id="seek" enter="//player.seek(Number(seek.text))"/>
+						<mx:ProgressBar mode="manual" source="{player.tiempoTotal}" maximum="100"  labelPlacement="center" label="{player.tiempoTotal} %" top="18" right="13" left="553"/>
+					</mx:Canvas>
+					
+					<mx:Canvas label="Ayuda" width="95%" height="100%">
+						<mx:Button click="setMisDescargas()"
+								   label="Cambiar" top="0" left="10" width="79" fontWeight="normal" fontSize="14"/>
+						<s:Label  text="{'Directorio de descarga: '+misDescargas}"  left="97" top="5"/>
+						<mx:LinkButton label="Acerca de Atenea..." left="25" top="48" click="verSplash()"/>
+						<mx:LinkButton label="Acerca de AureumDigital..." left="25" top="78" 
+									   click="getURL('http://www.aureumdigital.com')"/>
+						<mx:LinkButton label="Acuerdo de Licencia" left="25" top="108" 
+									   click="getURL('http://creativecommons.org/licenses/by-nc-nd/3.0/es/')"/>
+						<mx:LinkButton label="Buscar Actualización" left="25" top="140" 
+									   click="Actualicer.instance.check()"/>
+						<mx:Image left="25" bottom="10">
+							<mx:source>assets/88x31.png</mx:source>
+						</mx:Image>
+						<mx:HRule left="10" right="10" top="30"/>
+						<mx:Panel layout="absolute" left="300" top="50" title="Introducir Usuario:">
+							<mx:Form>
+								<mx:FormItem label="Usuario">
+									<mx:TextInput/>
+								</mx:FormItem>
+								<mx:FormItem label="Contraseña">
+									<mx:TextInput displayAsPassword="true"/>
+								</mx:FormItem>
+								<mx:FormItem>
+									<mx:Button label="Guardar"/>
+								</mx:FormItem>
+							</mx:Form>
+						</mx:Panel>
+					</mx:Canvas>
+					
+				</mx:ViewStack>
+				
+			</s:HGroup>
+			
+		</s:VGroup>  
+			
+		  
+	</chrome:chrome>
+
+</s:WindowedApplication>

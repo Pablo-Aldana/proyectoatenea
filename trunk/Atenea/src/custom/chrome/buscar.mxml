@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:HGroup xmlns:fx="http://ns.adobe.com/mxml/2009" 
+	 xmlns:s="library://ns.adobe.com/flex/spark" 
+	 xmlns:mx="library://ns.adobe.com/flex/mx" width="100%" verticalAlign="middle" gap="1">
+	
+	<s:Group>
+		<mx:Image source="@Embed('assets/skins/custom/icon_search_up.png')" left="5" bottom="3"/>
+	</s:Group>
+	
+	<mx:TextInput width="100%" id="search" color="#eeeeee" contentBackgroundAlpha="0" borderVisible="false" focusAlpha="0" paddingLeft="0" paddingTop="0" paddingRight="0"/>
+	
+</s:HGroup>

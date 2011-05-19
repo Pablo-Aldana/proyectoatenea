@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:c="custom.*" creationComplete="group1_creationCompleteHandler(event)"
+		 >
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			import au.singleton.Player;
+			[Bindable] public var player:Player
+
+			protected function group1_creationCompleteHandler(event:FlexEvent):void
+			{
+				player=Player.instance;
+			}
+			
+			
+			public function formatearVolumen(val:Number):String 
+			{
+				return Math.round(val)+ " %";
+				trace(Math.round(val)+ " %");
+			}
+
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<mx:Canvas bottom="0" right="0"  left="0">
+		<s:VGroup left="0" top="0" bottom="0" right="0" horizontalAlign="center" gap="3">
+			<s:Group>
+				<c:REW label="" id="prevButton" click="player.prev()" enabled="{Boolean(player.song)}" width="37" height="44" horizontalCenter="-33" verticalCenter="0"/>
+				<c:FFD label="" id="nextButton" click="player.next()" enabled="{Boolean(player.song)}" width="37" height="44" horizontalCenter="33" verticalCenter="0"/>
+				<c:Play label="" id="playButton" visible="{!player.playing}" enabled="{Boolean(player.song)}" 
+						click="player.pause()" width="47" height="47" horizontalCenter="0" verticalCenter="0"/>
+				<c:Pause label="" id="pauseButton" visible="{player.playing}" click="player.pause()" width="47" height="47" horizontalCenter="0" verticalCenter="0"/>
+			</s:Group>
+			<mx:HBox verticalAlign="middle" horizontalAlign="center" horizontalGap="1" x="248">
+				<mx:Image source="assets/skins/custom/volumen/Vol.png" width="20" height="18"/>
+				<mx:HSlider minimum="0" maximum="100" value="100" id="vol"
+							allowTrackClick="true" 
+							liveDragging="true"
+							dataTipFormatFunction="formatearVolumen"
+							change="player.setVolume(vol.value/100);" x="50" width="102"/>
+			</mx:HBox>
+		</s:VGroup>
+	</mx:Canvas> 
+</s:Group>

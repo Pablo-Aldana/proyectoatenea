@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"
+	label="descfile"  creationComplete="init();" height="43" width="100%">
+	
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.events.*;
+		
+			[Bindable] public var link:String;
+			[Bindable] public var item:Object;
+			[Bindable] public var nombre:String;
+			[Bindable] public var progreso:String;
+			private var urlStream:URLStream;
+			
+			public function init():void
+			{
+				
+				link=item.item.filename;
+				nombre=item.item.artista+" - "+item.item.titulo;
+				inicia.enabled=!item.item.d;
+				para.enabled=item.item.d;
+				bprogreso.setProgress(item.item.progreso,100);
+			}
+			
+			private function parar():void
+			{
+				para.enabled=false;
+				para.alpha=0.5;
+				inicia.enabled=true;
+				inicia.alpha=1;
+				urlStream.close();
+			}
+			
+			public function descarga():void
+			{
+				inicia.enabled=false;
+				inicia.alpha=0.5;
+				para.enabled=true;
+				para.alpha=1;
+				
+				var requesta:URLRequest = new URLRequest(link);
+				urlStream = new URLStream(); 
+				urlStream.addEventListener(ProgressEvent.PROGRESS, progressHandler);
+				urlStream.addEventListener(Event.COMPLETE, descargadofull);
+				try{
+					urlStream.load(requesta);
+				}catch(e:Error){};
+			}
+			
+			private function progressHandler(e:ProgressEvent):void
+			{
+				var perc:Number=Math.round((e.bytesLoaded/e.bytesTotal)*1000)/10;
+				bprogreso.setProgress(perc, 100);
+				bprogreso.label=perc+"% Completado";
+			}
+			
+			private function descargadofull(e:Event):void
+			{
+				para.enabled=false;
+				inicia.enabled=true;
+				para.alpha=0.5;
+				//Guardamos el instalable en binario en el escritorio 
+				var instalableBinario:ByteArray = new ByteArray();  
+				urlStream.readBytes(instalableBinario, 0, urlStream.bytesAvailable);
+				//bprogreso.label=nombrearc;
+				var descargado:File=File.desktopDirectory.resolvePath(nombre+".mp3");
+				// Escritura del archivo 
+				var fileStream:FileStream = new FileStream();
+				fileStream.addEventListener(Event.COMPLETE, escrito);
+				try{
+					fileStream.open(descargado, FileMode.WRITE);
+					fileStream.writeBytes(instalableBinario); 
+				}catch(e:Error){inicia.enabled=true;};
+			}
+			
+			private function escrito(e:Event):void{
+				inicia.enabled=true;
+				e.target.close();
+			}
+						
+		]]>
+	</mx:Script>
+	
+	<mx:ProgressBar id="bprogreso" label="" width="128.6" height="22" mode="manual" right="167" verticalCenter="0"/>
+	<mx:Button id="para" click="item.parar()"  label="Pausar" right="5" verticalCenter="0"/>
+	<mx:Button id="inicia" click="item.descarga()" label="Descarga" right="79" verticalCenter="0"/>
+	<s:Label text="{nombre}" x="10" y="10"/>
+	<s:Label text="{progreso}" x="381.4" y="10"/>
+	
+</mx:Canvas>
